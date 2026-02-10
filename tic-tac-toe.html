@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بازی دوز - Tic Tac Toe | بازی‌های کلاسیک</title>
+    
+    <!-- فونت فارسی Vazirmatn -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- استایل بازی دوز -->
+    <link rel="stylesheet" href="tic-tac-toe.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❌</text></svg>">
+    
+    <style>
+        /* انیمیشن‌های خاص بازی دوز */
+        @keyframes winLine {
+            0% { width: 0; opacity: 0; }
+            100% { width: 100%; opacity: 1; }
+        }
+        
+        @keyframes winCell {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes drawCells {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(1deg); }
+            75% { transform: rotate(-1deg); }
+        }
+        
+        @keyframes moveIndicator {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+        }
+        
+        @keyframes scoreIncrement {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes aiThinking {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .win-line {
+            position: absolute;
+            height: 8px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            border-radius: 4px;
+            z-index: 1;
+            animation: winLine 1s ease-out forwards;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        
+        .win-cell {
+            animation: winCell 0.5s ease-in-out 3;
+        }
+        
+        .draw-animation {
+            animation: drawCells 0.5s ease-in-out 3;
+        }
+        
+        .current-turn {
+            animation: moveIndicator 2s ease-in-out infinite;
+        }
+        
+        .score-updated {
+            animation: scoreIncrement 0.5s ease-in-out;
+        }
+        
+        .ai-thinking {
+            animation: aiThinking 1s ease-in-out infinite;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .cell-placeholder {
+            opacity: 0.3;
+            animation: pulse 2s infinite;
+        }
+        
+        .streak-badge {
+            background: linear-gradient(45deg, #f59e0b, #f97316);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        .timer-pulse {
+            animation: pulse 1s infinite;
+        }
+        
+        .sound-toggle.active i {
+            animation: rotate 2s linear infinite;
+        }
+        
+        .hint-flash {
+            animation: pulse 1s ease-in-out 3;
+        }
+    </style>
+</head>
+<body>
+    <!-- صفحه بارگذاری بازی -->
+    <div id="game-loading" class="game-loading">
+        <div class="game-loader">
+            <div class="tic-tac-toe-loader">
+                <div class="cell-loader x-loader">×</div>
+                <div class="cell-loader"></div>
+                <div class="cell-loader o-loader">○</div>
+                <div class="cell-loader o-loader">○</div>
+                <div class="cell-loader x-loader">×</div>
+                <div class="cell-loader"></div>
+                <div class="cell-loader"></div>
+                <div class="cell-loader x-loader">×</div>
+                <div class="cell-loader o-loader">○</div>
+            </div>
+            <p class="game-loading-text">در حال بارگذاری بازی دوز...</p>
+        </div>
+    </div>
+
+    <!-- هدر بازی -->
+    <header class="game-header">
+        <div class="container">
+            <div class="game-navbar">
+                <a href="index.html" class="back-to-home">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>بازگشت به خانه</span>
+                </a>
+                
+                <div class="game-title">
+                    <h1>
+                        <i class="fas fa-times x-title"></i>
+                        بازی دوز
+                        <i class="fas fa-circle o-title"></i>
+                    </h1>
+                    <p class="game-subtitle">کلاسیک ترین بازی استراتژیک</p>
+                </div>
+                
+                <div class="game-controls-top">
+                    <button class="sound-toggle" id="soundToggle" aria-label="صدای بازی">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <button class="theme-toggle-game" id="themeToggleGame" aria-label="تغییر تم">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- بخش اصلی بازی -->
+    <main class="game-main">
+        <div class="container">
+            <div class="game-layout">
+                <!-- پنل چپ: اطلاعات بازیکنان -->
+                <div class="player-panel">
+                    <!-- بازیکن X -->
+                    <div class="player-card player-x-card active-player" id="playerXCard">
+                        <div class="player-header">
+                            <div class="player-icon">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div class="player-info">
+                                <h3 class="player-name" id="playerXName">بازیکن X</h3>
+                                <div class="player-type">
+                                    <span class="player-type-badge human">انسان</span>
+                                    <button class="change-type-btn" data-player="x">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-label">امتیاز</div>
+                                <div class="stat-value score-updated" id="playerXScore">0</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">برد</div>
+                                <div class="stat-value" id="playerXWins">0</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">تعداد بازی</div>
+                                <div class="stat-value" id="playerXGames">0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="player-status">
+                            <div class="turn-indicator current-turn" id="xTurnIndicator">
+                                <i class="fas fa-chess-queen"></i>
+                                <span>نوبت شماست</span>
+                            </div>
+                            <div class="thinking-indicator ai-thinking" id="xThinking" style="display: none;">
+                                <i class="fas fa-brain"></i>
+                                <span>در حال فکر کردن...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- بازیکن O -->
+                    <div class="player-card player-o-card" id="playerOCard">
+                        <div class="player-header">
+                            <div class="player-icon">
+                                <i class="fas fa-circle"></i>
+                            </div>
+                            <div class="player-info">
+                                <h3 class="player-name" id="playerOName">بازیکن O</h3>
+                                <div class="player-type">
+                                    <span class="player-type-badge human">انسان</span>
+                                    <button class="change-type-btn" data-player="o">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-label">امتیاز</div>
+                                <div class="stat-value" id="playerOScore">0</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">برد</div>
+                                <div class="stat-value" id="playerOWins">0</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">تعداد بازی</div>
+                                <div class="stat-value" id="playerOGames">0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="player-status">
+                            <div class="turn-indicator" id="oTurnIndicator">
+                                <i class="fas fa-clock"></i>
+                                <span>منتظر نوبت</span>
+                            </div>
+                            <div class="thinking-indicator ai-thinking" id="oThinking" style="display: none;">
+                                <i class="fas fa-brain"></i>
+                                <span>در حال فکر کردن...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- آمار کلی -->
+                    <div class="game-stats-card">
+                        <h4><i class="fas fa-chart-bar"></i> آمار کلی</h4>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <div>
+                                    <div class="stat-number" id="totalGames">0</div>
+                                    <div class="stat-label">کل بازی‌ها</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <div>
+                                    <div class="stat-number" id="totalDraws">0</div>
+                                    <div class="stat-label">تساوی</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <div class="stat-number" id="totalTime">0</div>
+                                    <div class="stat-label">دقیقه بازی</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="streak-section">
+                            <h5>رکوردهای شما</h5>
+                            <div class="streaks">
+                                <div class="streak">
+                                    <span>بیشترین برد متوالی:</span>
+                                    <span class="streak-badge" id="winStreak">0</span>
+                                </div>
+                                <div class="streak">
+                                    <span>سریع‌ترین برد:</span>
+                                    <span class="streak-badge" id="fastestWin">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- بخش مرکزی: تخته بازی -->
+                <div class="game-center">
+                    <!-- تخته بازی -->
+                    <div class="game-board-container">
+                        <div class="board-header">
+                            <div class="game-mode-selector">
+                                <button class="mode-btn active" data-mode="pvp">
+                                    <i class="fas fa-user-friends"></i>
+                                    دو نفره
+                                </button>
+                                <button class="mode-btn" data-mode="easy">
+                                    <i class="fas fa-robot"></i>
+                                    آسان
+                                </button>
+                                <button class="mode-btn" data-mode="medium">
+                                    <i class="fas fa-brain"></i>
+                                    متوسط
+                                </button>
+                                <button class="mode-btn" data-mode="hard">
+                                    <i class="fas fa-crown"></i>
+                                    سخت
+                                </button>
+                            </div>
+                            
+                            <div class="game-timer">
+                                <i class="fas fa-hourglass-half"></i>
+                                <span id="gameTimer">00:00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="game-board" id="gameBoard">
+                            <!-- خطوط برنده (پویا اضافه می‌شوند) -->
+                            <div id="winLines"></div>
+                            
+                            <!-- سلول‌های بازی -->
+                            <div class="cell" data-index="0"></div>
+                            <div class="cell" data-index="1"></div>
+                            <div class="cell" data-index="2"></div>
+                            <div class="cell" data-index="3"></div>
+                            <div class="cell" data-index="4"></div>
+                            <div class="cell" data-index="5"></div>
+                            <div class="cell" data-index="6"></div>
+                            <div class="cell" data-index="7"></div>
+                            <div class="cell" data-index="8"></div>
+                        </div>
+                        
+                        <div class="board-footer">
+                            <div class="move-history">
+                                <h5><i class="fas fa-history"></i> تاریخچه حرکات</h5>
+                                <div class="moves-list" id="movesList">
+                                    <div class="empty-moves">هنوز حرکتی انجام نشده</div>
+                                </div>
+                            </div>
+                            
+                            <div class="hint-section">
+                                <button class="hint-btn" id="hintBtn" title="دریافت راهنمایی">
+                                    <i class="fas fa-lightbulb"></i>
+                                    راهنمایی
+                                </button>
+                                <div class="hint-text" id="hintText">
+                                    اولین حرکت خود را در مرکز انجام دهید
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- کنترل‌های بازی -->
+                    <div class="game-controls">
+                        <button class="control-btn btn-new-game" id="newGameBtn">
+                            <i class="fas fa-plus-circle"></i>
+                            بازی جدید
+                        </button>
+                        <button class="control-btn btn-undo" id="undoBtn" disabled>
+                            <i class="fas fa-undo"></i>
+                            بازگشت حرکت
+                        </button>
+                        <button class="control-btn btn-redo" id="redoBtn" disabled>
+                            <i class="fas fa-redo"></i>
+                            تکرار حرکت
+                        </button>
+                        <button class="control-btn btn-reset-score" id="resetScoreBtn">
+                            <i class="fas fa-trash-alt"></i>
+                            ریست امتیاز
+                        </button>
+                    </div>
+                    
+                    <!-- وضعیت بازی -->
+                    <div class="game-status" id="gameStatus">
+                        <div class="status-message">
+                            <i class="fas fa-info-circle"></i>
+                            <span id="statusText">بازی را شروع کنید! نوبت بازیکن X است.</span>
+                        </div>
+                        <div class="status-actions">
+                            <button class="btn-quick-restart" id="quickRestartBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                شروع سریع
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- پنل راست: تنظیمات و راهنما -->
+                <div class="settings-panel">
+                    <!-- تنظیمات بازی -->
+                    <div class="settings-card">
+                        <h4><i class="fas fa-cog"></i> تنظیمات بازی</h4>
+                        
+                        <div class="setting-group">
+                            <label class="setting-label">
+                                <span>اندازه تخته:</span>
+                                <select id="boardSize" class="setting-select">
+                                    <option value="3">۳×۳ (کلاسیک)</option>
+                                    <option value="4">۴×۴ (پیشرفته)</option>
+                                    <option value="5">۵×۵ (حرفه‌ای)</option>
+                                </select>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <label class="setting-label">
+                                <span>زمان هر حرکت (ثانیه):</span>
+                                <div class="setting-range">
+                                    <input type="range" id="moveTime" min="5" max="60" value="30" class="range-slider">
+                                    <span id="moveTimeValue">30</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <label class="setting-label">
+                                <input type="checkbox" id="soundEffects" checked>
+                                <span>صدای بازی</span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <label class="setting-label">
+                                <input type="checkbox" id="animations" checked>
+                                <span>انیمیشن‌ها</span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <label class="setting-label">
+                                <input type="checkbox" id="showHints" checked>
+                                <span>نمایش راهنمایی</span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <label class="setting-label">
+                                <input type="checkbox" id="highlightMoves" checked>
+                                <span>هایلایت حرکات</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- راهنمای بازی -->
+                    <div class="help-card">
+                        <h4><i class="fas fa-question-circle"></i> راهنمای بازی</h4>
+                        
+                        <div class="help-content">
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-bullseye"></i>
+                                </div>
+                                <div class="help-text">
+                                    <strong>هدف بازی:</strong>
+                                    <p>اولین بازیکنی که ۳ علامت خود را در یک ردیف، ستون یا قطر قرار دهد برنده است.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-chess-board"></i>
+                                </div>
+                                <div class="help-text">
+                                    <strong>استراتژی‌ها:</strong>
+                                    <p>• همیشه مرکز یا گوشه‌ها را بگیرید<br>
+                                    • سعی کنید دو در یک ردیف ایجاد کنید<br>
+                                    • حریف را مجبور به دفاع کنید</p>
+                                </div>
+                            </div>
+                            
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="help-text">
+                                    <strong>حالت‌های بازی:</strong>
+                                    <p>• دو نفره: بازی با دوستان<br>
+                                    • آسان: هوش مصنوعی ساده<br>
+                                    • متوسط: هوش مصنوعی چالشی<br>
+                                    • سخت: هوش مصنوعی پیشرفته</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- رکوردهای برتر -->
+                    <div class="records-card">
+                        <h4><i class="fas fa-trophy"></i> رکوردهای برتر</h4>
+                        
+                        <div class="records-list">
+                            <div class="record-item">
+                                <div class="record-rank">🥇</div>
+                                <div class="record-info">
+                                    <div class="record-player">بازیکن X</div>
+                                    <div class="record-score">۱۵ برد</div>
+                                </div>
+                            </div>
+                            <div class="record-item">
+                                <div class="record-rank">🥈</div>
+                                <div class="record-info">
+                                    <div class="record-player">بازیکن O</div>
+                                    <div class="record-score">۱۰ برد</div>
+                                </div>
+                            </div>
+                            <div class="record-item">
+                                <div class="record-rank">🥉</div>
+                                <div class="record-info">
+                                    <div class="record-player">شما</div>
+                                    <div class="record-score">۸ برد</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-view-all" id="viewAllRecordsBtn">
+                            <i class="fas fa-list"></i>
+                            مشاهده همه رکوردها
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- مودال برنده -->
+    <div class="modal" id="winnerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="winnerTitle">🎉 تبریک! شما برنده شدید! 🎉</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="winner-celebration">
+                    <div class="winner-icon" id="winnerIcon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="winner-message">
+                        <h3 id="winnerName">بازیکن X</h3>
+                        <p id="winnerDetails">شما در ۵ حرکت برنده شدید!</p>
+                    </div>
+                </div>
+                
+                <div class="winner-stats">
+                    <div class="winner-stat">
+                        <i class="fas fa-bolt"></i>
+                        <div>
+                            <div class="stat-value" id="winnerMoves">5</div>
+                            <div class="stat-label">تعداد حرکات</div>
+                        </div>
+                    </div>
+                    <div class="winner-stat">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <div class="stat-value" id="winnerTime">45</div>
+                            <div class="stat-label">ثانیه</div>
+                        </div>
+                    </div>
+                    <div class="winner-stat">
+                        <i class="fas fa-star"></i>
+                        <div>
+                            <div class="stat-value" id="winnerPoints">+10</div>
+                            <div class="stat-label">امتیاز</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalRematch">
+                    <i class="fas fa-redo"></i>
+                    بازی مجدد
+                </button>
+                <button class="btn btn-primary" id="modalNewGame">
+                    <i class="fas fa-plus-circle"></i>
+                    بازی جدید
+                </button>
+                <button class="btn btn-outline" id="modalShare">
+                    <i class="fas fa-share-alt"></i>
+                    اشتراک‌گذاری
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تساوی -->
+    <div class="modal" id="drawModal">
+        <div class="modal-content draw-modal">
+            <div class="modal-header">
+                <h2>🤝 بازی مساوی شد!</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="draw-celebration">
+                    <div class="draw-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="draw-message">
+                        <h3>هیچکس برنده نشد!</h3>
+                        <p>هر دو بازیکن بازی خوبی انجام دادند. دوباره تلاش کنید!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="drawRematch">
+                    <i class="fas fa-redo"></i>
+                    بازی مجدد
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- صداهای بازی -->
+    <audio id="clickSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="winSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="drawSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-game-ball-tap-2073.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="errorSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- اسکریپت بازی -->
+    <script src="tic-tac-toe.js"></script>
+    
+    <script>
+        // اسکریپت‌های اضافی برای انیمیشن‌ها و صداها
+        document.addEventListener('DOMContentLoaded', function() {
+            // مدیریت بارگذاری بازی
+            setTimeout(() => {
+                document.getElementById('game-loading').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('game-loading').style.display = 'none';
+                }, 500);
+            }, 1000);
+
+            // مدیریت صداها
+            const clickSound = document.getElementById('clickSound');
+            const winSound = document.getElementById('winSound');
+            const drawSound = document.getElementById('drawSound');
+            const errorSound = document.getElementById('errorSound');
+            
+            let soundEnabled = true;
+            
+            document.getElementById('soundToggle').addEventListener('click', function() {
+                soundEnabled = !soundEnabled;
+                const icon = this.querySelector('i');
+                if (soundEnabled) {
+                    icon.classList.remove('fa-volume-mute');
+                    icon.classList.add('fa-volume-up');
+                    this.classList.add('active');
+                } else {
+                    icon.classList.remove('fa-volume-up');
+                    icon.classList.add('fa-volume-mute');
+                    this.classList.remove('active');
+                }
+            });
+            
+            // تابع پخش صدا
+            window.playSound = function(soundType) {
+                if (!soundEnabled) return;
+                
+                let sound;
+                switch(soundType) {
+                    case 'click':
+                        sound = clickSound;
+                        sound.volume = 0.3;
+                        break;
+                    case 'win':
+                        sound = winSound;
+                        sound.volume = 0.5;
+                        break;
+                    case 'draw':
+                        sound = drawSound;
+                        sound.volume = 0.4;
+                        break;
+                    case 'error':
+                        sound = errorSound;
+                        sound.volume = 0.3;
+                        break;
+                }
+                
+                sound.currentTime = 0;
+                sound.play().catch(e => console.log("صدا پخش نشد:", e));
+            };
+
+            // مدیریت تم بازی
+            document.getElementById('themeToggleGame').addEventListener('click', function() {
+                document.body.classList.toggle('dark-theme');
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('dark-theme')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-slun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+
+            // ایجاد کنفتی
+            function createConfetti(count = 50) {
+                const container = document.querySelector('.game-board-container');
+                
+                for (let i = 0; i < count; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // موقعیت تصادفی
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.top = `${Math.random() * 100}%`;
+                    
+                    // رنگ تصادفی
+                    const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b'];
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // اندازه تصادفی
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    
+                    // انیمیشن
+                    const duration = Math.random() * 3 + 2;
+                    confetti.style.animation = `confetti ${duration}s ease-out forwards`;
+                    
+                    container.appendChild(confetti);
+                    
+                    // حذف بعد از انیمیشن
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, duration * 1000);
+                }
+            }
+
+            // نمایش برنده
+            window.showWinner = function(player, moves, time) {
+                createConfetti(100);
+                playSound('win');
+                
+                const modal = document.getElementById('winnerModal');
+                const winnerIcon = document.getElementById('winnerIcon');
+                const winnerName = document.getElementById('winnerName');
+                const winnerDetails = document.getElementById('winnerDetails');
+                const winnerMoves = document.getElementById('winnerMoves');
+                const winnerTime = document.getElementById('winnerTime');
+                const winnerPoints = document.getElementById('winnerPoints');
+                const winnerTitle = document.getElementById('winnerTitle');
+                
+                // تنظیم اطلاعات برنده
+                winnerName.textContent = player === 'X' ? 'بازیکن X' : 'بازیکن O';
+                winnerDetails.textContent = `در ${moves} حرکت برنده شدید!`;
+                winnerMoves.textContent = moves;
+                winnerTime.textContent = time;
+                winnerPoints.textContent = `+${Math.floor(100 / moves)}`;
+                
+                // تغییر رنگ آیکون برنده
+                winnerIcon.innerHTML = player === 'X' ? 
+                    '<i class="fas fa-times"></i>' : 
+                    '<i class="fas fa-circle"></i>';
+                winnerIcon.style.color = player === 'X' ? '#ef4444' : '#3b82f6';
+                
+                // تغییر عنوان
+                winnerTitle.textContent = player === 'X' ? 
+                    '🎉 بازیکن X برنده شد! 🎉' : 
+                    '🎉 بازیکن O برنده شد! 🎉';
+                
+                // نمایش مودال
+                modal.style.display = 'block';
+                
+                // مدیریت بستن مودال
+                document.getElementById('modalClose').onclick = function() {
+                    modal.style.display = 'none';
+                };
+                
+                // دکمه بازی مجدد
+                document.getElementById('modalRematch').onclick = function() {
+                    modal.style.display = 'none';
+                    window.startNewGame();
+                };
+                
+                // دکمه بازی جدید
+                document.getElementById('modalNewGame').onclick = function() {
+                    modal.style.display = 'none';
+                    window.startNewGame(true);
+                };
+                
+                // دکمه اشتراک‌گذاری
+                document.getElementById('modalShare').onclick = function() {
+                    const shareText = `من در بازی دوز برنده شدم! ${player} در ${moves} حرکت برنده شد. امتیاز: ${Math.floor(100 / moves)}`;
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'برنده بازی دوز!',
+                            text: shareText,
+                            url: window.location.href
+                        });
+                    } else {
+                        navigator.clipboard.writeText(shareText);
+                        alert('متن کپی شد!');
+                    }
+                };
+            };
+
+            // نمایش تساوی
+            window.showDraw = function() {
+                playSound('draw');
+                
+                const modal = document.getElementById('drawModal');
+                modal.style.display = 'block';
+                
+                // بستن مودال
+                modal.querySelector('.modal-close').onclick = function() {
+                    modal.style.display = 'none';
+                };
+                
+                // بازی مجدد
+                document.getElementById('drawRematch').onclick = function() {
+                    modal.style.display = 'none';
+                    window.startNewGame();
+                };
+            };
+
+            // تایمر بازی
+            let gameTime = 0;
+            let timerInterval;
+            
+            window.startTimer = function() {
+                clearInterval(timerInterval);
+                gameTime = 0;
+                updateTimerDisplay();
+                timerInterval = setInterval(() => {
+                    gameTime++;
+                    updateTimerDisplay();
+                }, 1000);
+            };
+            
+            window.stopTimer = function() {
+                clearInterval(timerInterval);
+            };
+            
+            window.resetTimer = function() {
+                gameTime = 0;
+                updateTimerDisplay();
+            };
+            
+            function updateTimerDisplay() {
+                const minutes = Math.floor(gameTime / 60);
+                const seconds = gameTime % 60;
+                const timerElement = document.getElementById('gameTimer');
+                timerElement.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // پالس در دقیقه آخر
+                if (gameTime > 60 && gameTime % 60 < 10) {
+                    timerElement.classList.add('timer-pulse');
+                } else {
+                    timerElement.classList.remove('timer-pulse');
+                }
+            }
+
+            // مدیریت اسلایدر زمان حرکت
+            const moveTimeSlider = document.getElementById('moveTime');
+            const moveTimeValue = document.getElementById('moveTimeValue');
+            
+            moveTimeSlider.addEventListener('input', function() {
+                moveTimeValue.textContent = this.value;
+            });
+
+            // مدیریت تغییر اندازه تخته
+            document.getElementById('boardSize').addEventListener('change', function() {
+                const size = parseInt(this.value);
+                alert(`تغییر اندازه تخته به ${size}×${size} نیاز به ری‌لود بازی دارد.`);
+                // در نسخه کامل این بخش پیاده‌سازی می‌شود
+            });
+
+            // راهنمایی
+            document.getElementById('hintBtn').addEventListener('click', function() {
+                playSound('click');
+                const hintText = document.getElementById('hintText');
+                hintText.classList.add('hint-flash');
+                setTimeout(() => {
+                    hintText.classList.remove('hint-flash');
+                }, 3000);
+            });
+
+            // نمایش سریع مودال‌ها برای تست
+            window.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'w') {
+                    showWinner('X', 5, 45);
+                }
+                if (e.ctrlKey && e.key === 'd') {
+                    showDraw();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
