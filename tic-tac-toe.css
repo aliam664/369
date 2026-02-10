@@ -1,0 +1,1348 @@
+/* tic-tac-toe.css */
+:root {
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --secondary: #8b5cf6;
+    --accent: #ec4899;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --x-color: #ef4444;
+    --o-color: #3b82f6;
+    --dark: #1e293b;
+    --light: #f8fafc;
+    --gray: #64748b;
+    --gray-light: #e2e8f0;
+    --gray-dark: #334155;
+    
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    --radius: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 30px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    line-height: 1.6;
+    color: var(--dark);
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+body.dark-theme {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: var(--light);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* صفحه بارگذاری بازی */
+.game-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.game-loader {
+    text-align: center;
+    color: white;
+}
+
+.tic-tac-toe-loader {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    grid-template-rows: repeat(3, 60px);
+    gap: 8px;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.cell-loader {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.x-loader { color: var(--x-color); animation: pulse 1.5s ease-in-out infinite; }
+.o-loader { color: var(--o-color); animation: pulse 1.5s ease-in-out infinite 0.5s; }
+
+.game-loading-text {
+    font-size: 1.25rem;
+    font-weight: 500;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* هدر بازی */
+.game-header {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray-light);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.dark-theme .game-header {
+    background: rgba(30, 41, 59, 0.9);
+    border-bottom: 1px solid var(--gray-dark);
+}
+
+.game-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+}
+
+.back-to-home {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--gray);
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    background: rgba(59, 130, 246, 0.1);
+    transition: all 0.3s ease;
+}
+
+.back-to-home:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateX(-5px);
+}
+
+.game-title {
+    text-align: center;
+}
+
+.game-title h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 0.5rem;
+}
+
+.x-title {
+    color: var(--x-color);
+    font-size: 2.2rem;
+}
+
+.o-title {
+    color: var(--o-color);
+    font-size: 2.2rem;
+}
+
+.game-subtitle {
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+.dark-theme .game-subtitle {
+    color: var(--gray-light);
+}
+
+.game-controls-top {
+    display: flex;
+    gap: 10px;
+}
+
+.sound-toggle,
+.theme-toggle-game {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: var(--gray-light);
+    color: var(--gray);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.dark-theme .sound-toggle,
+.dark-theme .theme-toggle-game {
+    background: var(--gray-dark);
+    color: var(--gray-light);
+}
+
+.sound-toggle:hover,
+.theme-toggle-game:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* چیدمان اصلی بازی */
+.game-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr 300px;
+    gap: 2rem;
+    padding: 2rem 0;
+    min-height: calc(100vh - 80px);
+}
+
+@media (max-width: 1200px) {
+    .game-layout {
+        grid-template-columns: 250px 1fr;
+        grid-template-rows: auto auto;
+    }
+    
+    .settings-panel {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* پنل بازیکنان */
+.player-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.player-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.dark-theme .player-card {
+    background: var(--dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-card.active-player {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-lg);
+}
+
+.player-x-card {
+    border-right: 4px solid var(--x-color);
+}
+
+.player-o-card {
+    border-right: 4px solid var(--o-color);
+}
+
+.player-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.player-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.player-x-card .player-icon {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2));
+    color: var(--x-color);
+    border: 2px solid var(--x-color);
+}
+
+.player-o-card .player-icon {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+    color: var(--o-color);
+    border: 2px solid var(--o-color);
+}
+
+.player-info {
+    flex: 1;
+}
+
+.player-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.player-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.player-type-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.human { background: var(--success); color: white; }
+.ai { background: var(--warning); color: white; }
+
+.change-type-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: var(--gray-light);
+    color: var(--gray);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.change-type-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: rotate(180deg);
+}
+
+.player-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.dark-theme .player-stats {
+    border-bottom-color: var(--gray-dark);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    margin-bottom: 0.25rem;
+}
+
+.dark-theme .stat-label {
+    color: var(--gray-light);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.player-status {
+    text-align: center;
+}
+
+.turn-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+    color: var(--primary);
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.thinking-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2));
+    color: var(--warning);
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* کارت آمار کلی */
+.game-stats-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.dark-theme .game-stats-card {
+    background: var(--dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.game-stats-card h4 {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.stat-number {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+}
+
+.streak-section {
+    padding-top: 1rem;
+    border-top: 1px solid var(--gray-light);
+}
+
+.dark-theme .streak-section {
+    border-top-color: var(--gray-dark);
+}
+
+.streak-section h5 {
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    color: var(--gray);
+}
+
+.dark-theme .streak-section h5 {
+    color: var(--gray-light);
+}
+
+.streaks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.streak {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+/* بخش مرکزی بازی */
+.game-center {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* تخته بازی */
+.game-board-container {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-xl);
+}
+
+.dark-theme .game-board-container {
+    background: var(--dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.game-mode-selector {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--gray-light);
+    background: transparent;
+    border-radius: var(--radius);
+    color: var(--gray);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.dark-theme .mode-btn {
+    border-color: var(--gray-dark);
+    color: var(--gray-light);
+}
+
+.mode-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.mode-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.game-timer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+    border-radius: var(--radius);
+    color: var(--primary);
+}
+
+/* تخته اصلی */
+.game-board {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    padding: 20px;
+    border-radius: var(--radius-xl);
+    box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .game-board {
+    background: linear-gradient(135deg, #334155, #1e293b);
+}
+
+@media (max-width: 768px) {
+    .game-board {
+        width: 100%;
+        height: 400px;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-board {
+        width: 100%;
+        height: 300px;
+        max-width: 300px;
+        padding: 15px;
+    }
+}
+
+.cell {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark-theme .cell {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.cell:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(0.98);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.dark-theme .cell:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.cell.x {
+    color: var(--x-color);
+    text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.cell.o {
+    color: var(--o-color);
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 30%, rgba(59, 130, 246, 0.1) 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cell:hover::before {
+    opacity: 1;
+}
+
+/* فوتر تخته */
+.board-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .board-footer {
+        grid-template-columns: 1fr;
+    }
+}
+
+.move-history {
+    background: var(--gray-light);
+    border-radius: var(--radius);
+    padding: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dark-theme .move-history {
+    background: var(--gray-dark);
+}
+
+.move-history h5 {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.moves-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.move-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem;
+    background: white;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.dark-theme .move-item {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.move-player {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.move-player.x { background: var(--x-color); color: white; }
+.move-player.o { background: var(--o-color); color: white; }
+
+.empty-moves {
+    text-align: center;
+    color: var(--gray);
+    padding: 2rem 0;
+}
+
+.hint-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.hint-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, var(--warning), #f97316);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.hint-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.hint-text {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+    padding: 1rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    text-align: center;
+    border-right: 4px solid var(--primary);
+}
+
+/* کنترل‌های بازی */
+.game-controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .game-controls {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .game-controls {
+        grid-template-columns: 1fr;
+    }
+}
+
+.control-btn {
+    padding: 1rem;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-new-game {
+    background: linear-gradient(135deg, var(--success), #34d399);
+    color: white;
+}
+
+.btn-undo {
+    background: linear-gradient(135deg, var(--warning), #fbbf24);
+    color: white;
+}
+
+.btn-redo {
+    background: linear-gradient(135deg, var(--primary), #60a5fa);
+    color: white;
+}
+
+.btn-reset-score {
+    background: linear-gradient(135deg, var(--danger), #f87171);
+    color: white;
+}
+
+.control-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* وضعیت بازی */
+.game-status {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+}
+
+.dark-theme .game-status {
+    background: var(--dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+.status-message i {
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.btn-quick-restart {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-quick-restart:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* پنل تنظیمات */
+.settings-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.settings-card,
+.help-card,
+.records-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.dark-theme .settings-card,
+.dark-theme .help-card,
+.dark-theme .records-card {
+    background: var(--dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-card h4,
+.help-card h4,
+.records-card h4 {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.setting-group {
+    margin-bottom: 1.25rem;
+}
+
+.setting-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    color: var(--gray);
+    cursor: pointer;
+}
+
+.dark-theme .setting-label {
+    color: var(--gray-light);
+}
+
+.setting-label span:first-child {
+    flex: 1;
+}
+
+.setting-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius);
+    background: white;
+    color: var(--dark);
+    font-family: inherit;
+    width: 150px;
+}
+
+.dark-theme .setting-select {
+    background: var(--gray-dark);
+    border-color: var(--gray);
+    color: var(--light);
+}
+
+.setting-range {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 200px;
+}
+
+.range-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 3px;
+    outline: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--primary);
+    cursor: pointer;
+}
+
+.setting-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-left: 10px;
+    accent-color: var(--primary);
+}
+
+/* راهنمای بازی */
+.help-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.help-item {
+    display: flex;
+    gap: 1rem;
+}
+
+.help-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.help-text strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--dark);
+}
+
+.dark-theme .help-text strong {
+    color: var(--light);
+}
+
+.help-text p {
+    font-size: 0.875rem;
+    color: var(--gray);
+    line-height: 1.6;
+}
+
+.dark-theme .help-text p {
+    color: var(--gray-light);
+}
+
+/* رکوردها */
+.records-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.record-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: var(--gray-light);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+}
+
+.dark-theme .record-item {
+    background: var(--gray-dark);
+}
+
+.record-item:hover {
+    transform: translateX(5px);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+}
+
+.record-rank {
+    font-size: 1.5rem;
+}
+
+.record-info {
+    flex: 1;
+}
+
+.record-player {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.record-score {
+    font-size: 0.875rem;
+    color: var(--gray);
+}
+
+.btn-view-all {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--gray-light);
+    background: transparent;
+    border-radius: var(--radius);
+    color: var(--gray);
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.dark-theme .btn-view-all {
+    border-color: var(--gray-dark);
+    color: var(--gray-light);
+}
+
+.btn-view-all:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* مودال‌ها */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+.dark-theme .modal-content {
+    background: var(--dark);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.winner-celebration {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.winner-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.winner-message h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.winner-message p {
+    color: var(--gray);
+    font-size: 1.125rem;
+}
+
+.winner-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-light);
+}
+
+.winner-stat {
+    text-align: center;
+}
+
+.winner-stat i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--gray);
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    background: var(--gray-light);
+}
+
+.dark-theme .modal-footer {
+    background: var(--gray-dark);
+}
+
+.modal-footer .btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.dark-theme .btn-secondary {
+    background: var(--dark);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--gray);
+    border: 2px solid var(--gray);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* مودال تساوی */
+.draw-modal .modal-header {
+    background: linear-gradient(135deg, var(--warning), #f97316);
+}
+
+.draw-celebration {
+    text-align: center;
+}
+
+.draw-icon {
+    font-size: 4rem;
+    color: var(--warning);
+    margin-bottom: 1rem;
+}
+
+.draw-celebration h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.dark-theme .draw-celebration h3 {
+    color: var(--light);
+}
+
+/* اسکرول‌بار */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-light);
+    border-radius: 4px;
+}
+
+.dark-theme ::-webkit-scrollbar-track {
+    background: var(--gray-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
