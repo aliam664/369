@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بازی‌های کلاسیک | دوز و مار و پله</title>
+    
+    <!-- فونت فارسی Vazirmatn -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- استایل اصلی -->
+    <link rel="stylesheet" href="main.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    
+    <style>
+        /* انیمیشن‌های اضافی */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+        
+        .hero-title {
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        .floating-icon {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .bounce-animation {
+            animation: bounce 2s infinite;
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 1s ease-out;
+        }
+        
+        .slide-in-left {
+            animation: slideInLeft 1s ease-out;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon i {
+            animation: rotate 2s linear infinite;
+            color: #3b82f6;
+        }
+        
+        /* استایل‌های خاص */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        
+        .game-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .game-card:hover::before {
+            opacity: 1;
+        }
+        
+        .game-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        .btn-play {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-play::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn-play:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .stats-counter {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .loading-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .loader-square {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+        
+        .game-preview {
+            position: relative;
+            height: 180px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tictactoe-board {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            grid-template-rows: repeat(3, 60px);
+            gap: 4px;
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .tictactoe-cell {
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tictactoe-cell.x { color: #ef4444; }
+        .tictactoe-cell.o { color: #3b82f6; }
+        .tictactoe-cell:hover { background: #f1f5f9; }
+        
+        .snake-board {
+            width: 200px;
+            height: 150px;
+            background: #065f46;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .snake-segment {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .food {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        
+        .ladder-board {
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ladder {
+            position: absolute;
+            width: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%;
+            background: repeating-linear-gradient(
+                180deg,
+                #7c2d12,
+                #7c2d12 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+        
+        .snake {
+            position: absolute;
+            width: 60px;
+            height: 10px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            border-radius: 5px;
+        }
+        
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+        }
+        
+        .shape-1 { animation: float 8s ease-in-out infinite; }
+        .shape-2 { animation: float 12s ease-in-out infinite reverse; }
+        .shape-3 { animation: float 10s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+    <!-- ذرات شناور -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- شکل‌های شناور -->
+    <div class="floating-shapes">
+        <div class="shape shape-1" style="top: 10%; left: 10%; width: 100px; height: 100px; background: linear-gradient(135deg, #3b82f6, transparent); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;"></div>
+        <div class="shape shape-2" style="top: 60%; right: 20%; width: 150px; height: 150px; background: linear-gradient(135deg, #8b5cf6, transparent); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;"></div>
+        <div class="shape shape-3" style="bottom: 20%; left: 20%; width: 80px; height: 80px; background: linear-gradient(135deg, #ec4899, transparent); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;"></div>
+    </div>
+
+    <!-- صفحه بارگذاری -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loader">
+                <div class="loader-square" style="animation-delay: 0s;"></div>
+                <div class="loader-square" style="animation-delay: 0.1s;"></div>
+                <div class="loader-square" style="animation-delay: 0.2s;"></div>
+                <div class="loader-square" style="animation-delay: 0.3s;"></div>
+            </div>
+            <p class="loading-text">🎮 در حال بارگذاری دنیای بازی‌ها...</p>
+            <div class="loading-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- هدر اصلی -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-gamepad floating-icon"></i>
+                    <span>بازی‌های کلاسیک</span>
+                </a>
+                
+                <div class="nav-menu" id="navMenu">
+                    <a href="#" class="nav-link active"><i class="fas fa-home"></i> خانه</a>
+                    <a href="#games" class="nav-link"><i class="fas fa-dice"></i> بازی‌ها</a>
+                    <a href="#features" class="nav-link"><i class="fas fa-star"></i> ویژگی‌ها</a>
+                    <a href="#stats" class="nav-link"><i class="fas fa-chart-line"></i> آمار</a>
+                    <a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> درباره</a>
+                </div>
+                
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="btn btn-sm btn-primary" onclick="window.location.href='#games'">
+                        <i class="fas fa-play"></i> شروع بازی
+                    </button>
+                </div>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="منو">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- هیرو سکشن -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text slide-in-left">
+                    <div class="badge pulse-animation">
+                        <i class="fas fa-crown"></i> پرفروش‌ترین بازی‌ها
+                    </div>
+                    
+                    <h1 class="hero-title gradient-text">
+                        <span class="title-line">دنیای بازی‌های</span>
+                        <span class="title-line">کلاسیک و نوستالژیک</span>
+                    </h1>
+                    
+                    <p class="hero-subtitle">
+                        مجموعه‌ای از بهترین بازی‌های کلاسیک ایرانی و جهانی با طراحی مدرن، 
+                        گرافیک پیشرفته و امکانات کامل
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <i class="fas fa-users bounce-animation"></i>
+                            <div>
+                                <span class="counter" data-target="10000">0</span>+
+                                <small>بازیکن فعال</small>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-trophy bounce-animation"></i>
+                            <div>
+                                <span class="counter" data-target="5000">0</span>+
+                                <small>بازی انجام شده</small>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-heart bounce-animation"></i>
+                            <div>
+                                <span class="counter" data-target="98">0</span>%
+                                <small>رضایت کاربران</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-buttons">
+                        <a href="#games" class="btn btn-primary btn-play pulse-animation">
+                            <i class="fas fa-play-circle"></i>
+                            شروع بازی رایگان
+                        </a>
+                        <button class="btn btn-secondary" onclick="showDemoVideo()">
+                            <i class="fas fa-video"></i>
+                            مشاهده دمو
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="hero-image slide-in-right">
+                    <div class="floating-game-cards">
+                        <div class="game-card main-card pulse-animation">
+                            <div class="card-content">
+                                <div class="game-icon">
+                                    <i class="fas fa-times-circle"></i>
+                                    <i class="fas fa-circle-notch"></i>
+                                </div>
+                                <h3>بازی دوز</h3>
+                                <p>کلاسیک و استراتژیک</p>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span>4.8</span>
+                                </div>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش بازی‌ها -->
+    <section id="games" class="games-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-gamepad"></i>
+                    مجموعه بازی‌های ما
+                </h2>
+                <p class="section-subtitle">انتخاب کنید، بازی کنید، لذت ببرید!</p>
+            </div>
+            
+            <div class="games-grid">
+                <!-- بازی دوز -->
+                <div class="game-card tictactoe-card">
+                    <div class="game-card-header">
+                        <div class="game-badge completed">
+                            <i class="fas fa-check-circle"></i> آنلاین
+                        </div>
+                        <div class="game-icon-wrapper">
+                            <i class="fas fa-times x-icon"></i>
+                            <i class="fas fa-circle o-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card-body">
+                        <h3 class="game-title">بازی دوز (Tic Tac Toe)</h3>
+                        <p class="game-description">
+                            بازی استراتژیک دو نفره کلاسیک. هوش خود را بسنجید و 
+                            در کمترین حرکت حریف را شکست دهید.
+                        </p>
+                        
+                        <div class="game-preview">
+                            <div class="tictactoe-board">
+                                <div class="tictactoe-cell x">×</div>
+                                <div class="tictactoe-cell"></div>
+                                <div class="tictactoe-cell o">○</div>
+                                <div class="tictactoe-cell o">○</div>
+                                <div class="tictactoe-cell x">×</div>
+                                <div class="tictactoe-cell"></div>
+                                <div class="tictactoe-cell"></div>
+                                <div class="tictactoe-cell x">×</div>
+                                <div class="tictactoe-cell o">○</div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-features">
+                            <span class="feature-tag"><i class="fas fa-user-friends"></i> ۲ نفره</span>
+                            <span class="feature-tag"><i class="fas fa-brain"></i> استراتژی</span>
+                            <span class="feature-tag"><i class="fas fa-bolt"></i> سریع</span>
+                            <span class="feature-tag"><i class="fas fa-trophy"></i> رقابتی</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <div class="stat">
+                                <i class="fas fa-clock"></i>
+                                <span>۵ دقیقه</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                <span>سطح: متوسط</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-download"></i>
+                                <span>رایگان</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card-footer">
+                        <a href="tic-tac-toe.html" class="btn btn-primary btn-play">
+                            <i class="fas fa-play"></i>
+                            شروع بازی دوز
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- بازی مار و پله -->
+                <div class="game-card snake-card">
+                    <div class="game-card-header">
+                        <div class="game-badge featured">
+                            <i class="fas fa-fire"></i> پرطرفدار
+                        </div>
+                        <div class="game-icon-wrapper">
+                            <i class="fas fa-snake snake-icon"></i>
+                            <i class="fas fa-ladder-ladder ladder-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card-body">
+                        <h3 class="game-title">مار و پله (Snakes & Ladders)</h3>
+                        <p class="game-description">
+                            بازی شانس و هیجان! با تاس بیندازید، از نردبان بالا بروید 
+                            و از مارها فرار کنید. اولین نفری باشید که برنده می‌شود!
+                        </p>
+                        
+                        <div class="game-preview">
+                            <div class="ladder-board">
+                                <div class="ladder"></div>
+                                <div class="snake" style="top: 30px; left: 30px; transform: rotate(30deg);"></div>
+                                <div class="snake" style="bottom: 50px; right: 40px; transform: rotate(-20deg);"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-features">
+                            <span class="feature-tag"><i class="fas fa-users"></i> ۲-۴ نفره</span>
+                            <span class="feature-tag"><i class="fas fa-dice"></i> شانسی</span>
+                            <span class="feature-tag"><i class="fas fa-grin-squint"></i> خانوادگی</span>
+                            <span class="feature-tag"><i class="fas fa-random"></i> غیرقابل پیش‌بینی</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <div class="stat">
+                                <i class="fas fa-clock"></i>
+                                <span>۱۵ دقیقه</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                <span>سطح: آسان</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-download"></i>
+                                <span>رایگان</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card-footer">
+                        <a href="snakes-ladders.html" class="btn btn-primary btn-play">
+                            <i class="fas fa-play"></i>
+                            شروع مار و پله
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- بازی مار -->
+                <div class="game-card classic-card">
+                    <div class="game-card-header">
+                        <div class="game-badge new">
+                            <i class="fas fa-plus-circle"></i> به زودی
+                        </div>
+                        <div class="game-icon-wrapper">
+                            <i class="fas fa-apple-alt food-icon"></i>
+                            <i class="fas fa-long-arrow-alt-right snake-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card-body">
+                        <h3 class="game-title">بازی مار (Snake Game)</h3>
+                        <p class="game-description">
+                            بازی کلاسیک و اعتیادآور! مار خود را هدایت کنید، غذا جمع کنید 
+                            و مراقب باشید که به خودتان نخورید. رکورد خود را ثبت کنید!
+                        </p>
+                        
+                        <div class="game-preview">
+                            <div class="snake-board">
+                                <div class="snake-segment" style="top: 40px; left: 40px;"></div>
+                                <div class="snake-segment" style="top: 40px; left: 60px;"></div>
+                                <div class="snake-segment" style="top: 40px; left: 80px;"></div>
+                                <div class="snake-segment" style="top: 60px; left: 80px;"></div>
+                                <div class="snake-segment" style="top: 80px; left: 80px;"></div>
+                                <div class="food" style="top: 20px; left: 120px;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-features">
+                            <span class="feature-tag"><i class="fas fa-user"></i> تک نفره</span>
+                            <span class="feature-tag"><i class="fas fa-running"></i> سرعت</span>
+                            <span class="feature-tag"><i class="fas fa-medal"></i> رکوردگیری</span>
+                            <span class="feature-tag"><i class="fas fa-infinity"></i> بی‌نهایت</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <div class="stat">
+                                <i class="fas fa-clock"></i>
+                                <span>نامحدود</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-chart-line"></i>
+                                <span>سطح: دشوار</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-download"></i>
+                                <span>رایگان</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card-footer">
+                        <button class="btn btn-secondary btn-play disabled" onclick="showComingSoon()">
+                            <i class="fas fa-hourglass-half"></i>
+                            به زودی...
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش ویژگی‌ها -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-magic"></i>
+                    چرا بازی‌های ما خاص هستند؟
+                </h2>
+                <p class="section-subtitle">ویژگی‌های منحصر به فرد پلتفرم بازی‌های ما</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>طراحی مدرن</h3>
+                    <p>گرافیک ۴K، انیمیشن‌های روان و UI/UX پیشرفته</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>واکنش‌گرا</h3>
+                    <p>بهینه شده برای تمام دستگاه‌ها از موبایل تا دسکتاپ</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>سریع و سبک</h3>
+                    <p>لود سریع، بدون نیاز به اینترنت و کم مصرف</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>چند نفره</h3>
+                    <p>امکان بازی با دوستان و خانواده روی یک دستگاه</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>هوش مصنوعی</h3>
+                    <p>حریفان هوشمند با سطوح مختلف دشواری</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>آمار کامل</h3>
+                    <p>پیگیری پیشرفت و تحلیل عملکرد بازیکنان</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش آمار -->
+    <section id="stats" class="stats-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    آمار و ارقام پلتفرم
+                </h2>
+                <p class="section-subtitle">اعدادی که گویای کیفیت هستند</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3 class="stats-counter" data-target="10000">0</h3>
+                    <p>بازیکن ثبت‌نام شده</p>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="stats-counter" data-target="25000">0</h3>
+                    <p>بازی انجام شده</p>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="stats-counter" data-target="5000">0</h3>
+                    <p>ساعت بازی</p>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="stats-counter" data-target="4.9">0</h3>
+                    <p>امتیاز از ۵</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بخش درباره -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    درباره پروژه
+                </h2>
+                <p class="section-subtitle">اهداف، تکنولوژی و آینده</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>🎯 هدف ما</h3>
+                    <p>
+                        ما باور داریم که بازی‌های ساده کلاسیک می‌توانند همان‌قدر لذت‌بخش باشند 
+                        که بازی‌های مدرن و پیچیده. هدف ما احیای این بازی‌ها با تکنولوژی‌های 
+                        روز و ارائه تجربه‌ای متفاوت است.
+                    </p>
+                    
+                    <h3>🚀 تکنولوژی‌ها</h3>
+                    <div class="tech-stack">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript ES6+</span>
+                        <span class="tech-tag">Canvas API</span>
+                        <span class="tech-tag">Web Animations</span>
+                        <span class="tech-tag">LocalStorage</span>
+                    </div>
+                    
+                    <h3>📅 نقشه راه</h3>
+                    <div class="roadmap">
+                        <div class="roadmap-item completed">
+                            <span class="roadmap-marker"></span>
+                            <div>
+                                <h4>فاز ۱: بازی دوز</h4>
+                                <p>تکمیل شده - نسخه پایدار</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-item current">
+                            <span class="roadmap-marker"></span>
+                            <div>
+                                <h4>فاز ۲: مار و پله</h4>
+                                <p>در حال توسعه</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-item">
+                            <span class="roadmap-marker"></span>
+                            <div>
+                                <h4>فاز ۳: بازی مار</h4>
+                                <p>برنامه‌ریزی شده</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-image">
+                    <div class="code-preview">
+                        <div class="code-header">
+                            <span class="code-dot red"></span>
+                            <span class="code-dot yellow"></span>
+                            <span class="code-dot green"></span>
+                            <span class="code-title">game.js</span>
+                        </div>
+                        <pre class="code-content"><code>// سیستم بازی دوز
+class TicTacToe {
+    constructor() {
+        this.board = Array(9).fill('');
+        this.currentPlayer = 'X';
+        this.winner = null;
+    }
+    
+    // منطق بازی
+    makeMove(index) {
+        if (!this.board[index] && !this.winner) {
+            this.board[index] = this.currentPlayer;
+            this.checkWinner();
+            this.currentPlayer = 
+                this.currentPlayer === 'X' ? 'O' : 'X';
+        }
+    }
+    
+    // بررسی برنده
+    checkWinner() {
+        const winPatterns = [
+            [0,1,2], [3,4,5], [6,7,8], // ردیف
+            [0,3,6], [1,4,7], [2,5,8], // ستون
+            [0,4,8], [2,4,6]           // قطر
+        ];
+        
+        for (let pattern of winPatterns) {
+            const [a,b,c] = pattern;
+            if (this.board[a] && 
+                this.board[a] === this.board[b] && 
+                this.board[a] === this.board[c]) {
+                this.winner = this.board[a];
+                break;
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- دکمه بازگشت به بالا -->
+    <button class="back-to-top" id="backToTop" aria-label="بازگشت به بالا">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- اسکریپت‌ها -->
+    <script src="main.js"></script>
+    
+    <script>
+        // اسکریپت‌های اضافی برای انیمیشن‌ها
+        document.addEventListener('DOMContentLoaded', function() {
+            // مدیریت بارگذاری
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    initAnimations();
+                }, 500);
+            }, 1500);
+
+            // ایجاد ذرات
+            createParticles();
+            
+            // شمارنده‌ها
+            startCounters();
+            
+            // دمو ویدئو
+            window.showDemoVideo = function() {
+                alert('🎬 نسخه دموی ویدئویی به زودی اضافه می‌شود!');
+            };
+            
+            window.showComingSoon = function() {
+                alert('⏳ این بازی در حال توسعه است و به زودی منتشر می‌شود!');
+            };
+        });
+
+        function initAnimations() {
+            // انیمیشن اسکرول
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, observerOptions);
+
+            // مشاهده عناصر برای انیمیشن
+            document.querySelectorAll('.game-card, .feature-card, .stat-card').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // اندازه تصادفی
+                const size = Math.random() * 5 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // موقعیت تصادفی
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // انیمیشن
+                particle.style.animation = `float ${Math.random() * 20 + 10}s ease-in-out infinite`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                // شفافیت
+                particle.style.opacity = Math.random() * 0.3 + 0.1;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function startCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
+
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const increment = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(updateCount, 1);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+
+                // شروع با تأخیر
+                setTimeout(updateCount, 500);
+            });
+        }
+
+        // مدیریت تم
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-theme')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+
+        // بازگشت به بالا
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.opacity = '1';
+                backToTop.style.visibility = 'visible';
+            } else {
+                backToTop.style.opacity = '0';
+                backToTop.style.visibility = 'hidden';
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // منوی موبایل
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            menuToggle.querySelector('i').classList.toggle('fa-bars');
+            menuToggle.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // بستن منو با کلیک روی لینک
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                menuToggle.querySelector('i').classList.add('fa-bars');
+                menuToggle.querySelector('i').classList.remove('fa-times');
+            });
+        });
+    </script>
+</body>
+</html>
