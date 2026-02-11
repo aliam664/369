@@ -2,134 +2,1994 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بازی دوز - Tic Tac Toe | بازی‌های کلاسیک</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بازی دوز حرفه‌ای | Tic Tac Toe Pro | بازی‌های استراتژیک کلاسیک</title>
     
-    <!-- فونت فارسی Vazirmatn -->
+    <!-- متا تگ‌های SEO -->
+    <meta name="description" content="بازی دوز (تیک تاک تو) حرفه‌ای آنلاین با هوش مصنوعی پیشرفته، چندین حالت بازی، آمار پیشرفته و طراحی زیبا و واکنش‌گرا">
+    <meta name="keywords" content="بازی دوز, tic tac toe, بازی دو نفره, بازی استراتژیک, بازی آنلاین, بازی فکری, هوش مصنوعی">
+    <meta name="author" content="Tic Tac Toe Pro">
+    <meta property="og:title" content="بازی دوز حرفه‌ای آنلاین">
+    <meta property="og:description" content="بازی دوز کلاسیک با قابلیت‌های پیشرفته، هوش مصنوعی چند سطحی و آمار کامل">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tic-tac-toe-pro.example.com">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#3b82f6">
+    
+    <!-- فونت فارسی Vazirmatn با پیش‌بارگذاری -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <!-- استایل بازی دوز -->
-    <link rel="stylesheet" href="tic-tac-toe.css">
+    <!-- Animate.css برای انیمیشن‌های پیشرفته -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❌</text></svg>">
+    <!-- Favicon سفارشی -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%233b82f6%22>❌</text><text y=%22.9em%22 x=%2250%22 font-size=%2290%22 fill=%22%23ef4444%22>⭕</text></svg>">
     
+    <!-- استایل اصلی بازی -->
     <style>
-        /* انیمیشن‌های خاص بازی دوز */
+        /* Reset و تنظیمات پایه */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* تم روشن */
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --secondary-color: #8b5cf6;
+            --accent-color: #ec4899;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* سایه‌ها */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            
+            /* انیمیشن‌ها */
+            --transition-fast: 150ms ease-in-out;
+            --transition-normal: 300ms ease-in-out;
+            --transition-slow: 500ms ease-in-out;
+            
+            /* فونت‌ها */
+            --font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+            
+            /* حاشیه‌ها */
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --border-radius-2xl: 1.5rem;
+            --border-radius-full: 9999px;
+        }
+
+        /* تم تیره */
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --primary-dark: #3b82f6;
+            --primary-light: #93c5fd;
+            --secondary-color: #a78bfa;
+            --accent-color: #f472b6;
+            --success-color: #34d399;
+            --warning-color: #fbbf24;
+            --danger-color: #f87171;
+            --dark-color: #f9fafb;
+            --light-color: #111827;
+            --gray-50: #111827;
+            --gray-100: #1f2937;
+            --gray-200: #374151;
+            --gray-300: #4b5563;
+            --gray-400: #6b7280;
+            --gray-500: #9ca3af;
+            --gray-600: #d1d5db;
+            --gray-700: #e5e7eb;
+            --gray-800: #f3f4f6;
+            --gray-900: #f9fafb;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            min-height: 100vh;
+            transition: background-color var(--transition-normal);
+            overflow-x: hidden;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* صفحه بارگذاری */
+        .game-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .game-loader {
+            text-align: center;
+        }
+
+        .tic-tac-toe-loader {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            grid-template-rows: repeat(3, 60px);
+            gap: 10px;
+            margin: 0 auto 2rem;
+            transform: rotate(45deg);
+        }
+
+        .cell-loader {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            animation: pulse 1.5s infinite alternate;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .x-loader {
+            color: #ff6b6b;
+            animation-delay: 0.2s;
+        }
+
+        .o-loader {
+            color: #4ecdc4;
+            animation-delay: 0.4s;
+        }
+
+        .game-loading-text {
+            color: white;
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            animation: fadeInOut 2s infinite;
+        }
+
+        .loading-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-full);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: var(--border-radius-full);
+        }
+
+        /* هدر بازی */
+        .game-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        [data-theme="dark"] .game-header {
+            background: rgba(31, 41, 55, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-to-home {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--gray-100);
+            border-radius: var(--border-radius-lg);
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            border: 2px solid transparent;
+        }
+
+        [data-theme="dark"] .back-to-home {
+            background: var(--gray-800);
+            color: var(--gray-300);
+        }
+
+        .back-to-home:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .back-to-home i {
+            transition: transform var(--transition-fast);
+        }
+
+        .back-to-home:hover i {
+            transform: translateX(3px);
+        }
+
+        .game-title {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .game-title h1 {
+            font-size: var(--font-size-2xl);
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        [data-theme="dark"] .game-title h1 {
+            color: var(--gray-100);
+        }
+
+        .x-title {
+            color: var(--danger-color);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .o-title {
+            color: var(--primary-color);
+            animation: float 3s ease-in-out infinite 0.5s;
+        }
+
+        .game-subtitle {
+            color: var(--gray-600);
+            font-size: var(--font-size-sm);
+            font-weight: 400;
+        }
+
+        [data-theme="dark"] .game-subtitle {
+            color: var(--gray-400);
+        }
+
+        .game-controls-top {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .sound-toggle,
+        .theme-toggle-game {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--border-radius-full);
+            background: var(--gray-100);
+            border: none;
+            color: var(--gray-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .sound-toggle,
+        [data-theme="dark"] .theme-toggle-game {
+            background: var(--gray-800);
+            color: var(--gray-300);
+        }
+
+        .sound-toggle:hover,
+        .theme-toggle-game:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .sound-toggle.active {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .sound-toggle.active i {
+            animation: rotate 2s linear infinite;
+        }
+
+        /* بخش اصلی بازی */
+        .game-main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .game-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 1.5rem;
+            height: 100%;
+        }
+
+        @media (max-width: 1200px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .player-panel,
+            .settings-panel {
+                display: none;
+            }
+            
+            .mobile-controls {
+                display: block;
+            }
+        }
+
+        /* پنل بازیکنان */
+        .player-card {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+            transition: all var(--transition-normal);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .player-card {
+            background: var(--gray-800);
+        }
+
+        .player-card.active-player {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg), 0 0 0 4px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .player-card.active-player::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            animation: shimmer 2s infinite;
+        }
+
+        .player-x-card .player-icon {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+        }
+
+        .player-o-card .player-icon {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: white;
+        }
+
+        .player-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .player-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .player-info {
+            flex-grow: 1;
+        }
+
+        .player-name {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        [data-theme="dark"] .player-name {
+            color: var(--gray-100);
+        }
+
+        .player-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .player-type-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .player-type-badge.human {
+            background: linear-gradient(135deg, var(--success-color), #34d399);
+            color: white;
+        }
+
+        .player-type-badge.ai {
+            background: linear-gradient(135deg, var(--secondary-color), #a78bfa);
+            color: white;
+        }
+
+        .change-type-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--border-radius-full);
+            background: var(--gray-100);
+            border: none;
+            color: var(--gray-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        [data-theme="dark"] .change-type-btn {
+            background: var(--gray-700);
+            color: var(--gray-400);
+        }
+
+        .change-type-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .player-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--gray-600);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        [data-theme="dark"] .stat-label {
+            color: var(--gray-400);
+        }
+
+        .stat-value {
+            font-size: var(--font-size-xl);
+            font-weight: 800;
+            color: var(--gray-800);
+            transition: all var(--transition-fast);
+        }
+
+        [data-theme="dark"] .stat-value {
+            color: var(--gray-100);
+        }
+
+        .score-updated {
+            animation: scoreIncrement 0.5s ease-in-out;
+        }
+
+        .player-status {
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        [data-theme="dark"] .player-status {
+            border-top-color: var(--gray-700);
+        }
+
+        .turn-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--gray-50);
+            border-radius: var(--border-radius-lg);
+            color: var(--gray-700);
+            font-weight: 500;
+            transition: all var(--transition-normal);
+        }
+
+        [data-theme="dark"] .turn-indicator {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .turn-indicator.current-turn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .current-turn {
+            animation: moveIndicator 2s ease-in-out infinite;
+        }
+
+        .thinking-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border-radius: var(--border-radius-lg);
+            color: white;
+            font-weight: 500;
+        }
+
+        .ai-thinking {
+            animation: aiThinking 1s ease-in-out infinite;
+        }
+
+        /* آمار کلی */
+        .game-stats-card {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        [data-theme="dark"] .game-stats-card {
+            background: var(--gray-800);
+        }
+
+        .game-stats-card h4 {
+            font-size: var(--font-size-lg);
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        [data-theme="dark"] .game-stats-card h4 {
+            color: var(--gray-100);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-100);
+            border-radius: var(--border-radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .stat-icon {
+            background: var(--gray-700);
+        }
+
+        .stat-number {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        [data-theme="dark"] .stat-number {
+            color: var(--gray-100);
+        }
+
+        .streak-section {
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        [data-theme="dark"] .streak-section {
+            border-top-color: var(--gray-700);
+        }
+
+        .streak-section h5 {
+            font-size: var(--font-size-base);
+            color: var(--gray-700);
+            margin-bottom: 0.75rem;
+        }
+
+        [data-theme="dark"] .streak-section h5 {
+            color: var(--gray-300);
+        }
+
+        .streaks {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .streak {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .streak-badge {
+            background: linear-gradient(135deg, var(--warning-color), #f97316);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        /* تخته بازی */
+        .game-center {
+            background: white;
+            border-radius: var(--border-radius-2xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        [data-theme="dark"] .game-center {
+            background: var(--gray-800);
+        }
+
+        .game-board-container {
+            flex-grow: 1;
+        }
+
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .game-mode-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            padding: 0.75rem 1.25rem;
+            background: var(--gray-100);
+            border: 2px solid transparent;
+            border-radius: var(--border-radius-lg);
+            color: var(--gray-700);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        [data-theme="dark"] .mode-btn {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .mode-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .game-timer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--gray-50);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--gray-800);
+            box-shadow: var(--shadow-sm);
+        }
+
+        [data-theme="dark"] .game-timer {
+            background: var(--gray-700);
+            color: var(--gray-100);
+        }
+
+        .timer-pulse {
+            animation: pulse 1s infinite;
+        }
+
+        /* تخته بازی */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 12px;
+            aspect-ratio: 1;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            background: linear-gradient(135deg, var(--gray-100), var(--gray-50));
+            padding: 20px;
+            border-radius: var(--border-radius-2xl);
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.1),
+                var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        [data-theme="dark"] .game-board {
+            background: linear-gradient(135deg, var(--gray-800), var(--gray-700));
+            border-color: var(--gray-700);
+        }
+
+        .cell {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            box-shadow: var(--shadow-md);
+            border: 2px solid transparent;
+        }
+
+        [data-theme="dark"] .cell {
+            background: var(--gray-700);
+        }
+
+        .cell:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+            background: var(--gray-50);
+        }
+
+        [data-theme="dark"] .cell:hover {
+            background: var(--gray-600);
+        }
+
+        .cell.x {
+            color: var(--danger-color);
+        }
+
+        .cell.o {
+            color: var(--primary-color);
+        }
+
+        .cell.win-cell {
+            animation: winCell 0.5s ease-in-out 3;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+        }
+
+        .cell.occupied:hover {
+            transform: none;
+            cursor: not-allowed;
+            border-color: transparent;
+            background: white;
+        }
+
+        [data-theme="dark"] .cell.occupied:hover {
+            background: var(--gray-700);
+        }
+
+        .cell-placeholder {
+            opacity: 0.3;
+            animation: pulse 2s infinite;
+        }
+
+        /* خط برنده */
+        .win-line {
+            position: absolute;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            border-radius: 4px;
+            z-index: 1;
+            animation: winLine 1s ease-out forwards;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            transform-origin: left center;
+        }
+
+        .horizontal-line {
+            width: calc(100% - 40px);
+            left: 20px;
+        }
+
+        .vertical-line {
+            width: 8px;
+            height: calc(100% - 40px);
+            top: 20px;
+        }
+
+        .diagonal-line {
+            width: calc(141.42% - 40px);
+            height: 8px;
+            top: calc(50% - 4px);
+            left: 20px;
+        }
+
+        .diagonal-line-2 {
+            width: calc(141.42% - 40px);
+            height: 8px;
+            top: calc(50% - 4px);
+            left: 20px;
+            transform: rotate(-45deg);
+            transform-origin: left center;
+        }
+
+        /* پایین تخته */
+        .board-footer {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            margin-top: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .board-footer {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .move-history {
+            background: var(--gray-50);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        [data-theme="dark"] .move-history {
+            background: var(--gray-700);
+        }
+
+        .move-history h5 {
+            font-size: var(--font-size-base);
+            color: var(--gray-700);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        [data-theme="dark"] .move-history h5 {
+            color: var(--gray-300);
+        }
+
+        .moves-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .move-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: var(--border-radius-md);
+            transition: all var(--transition-fast);
+        }
+
+        [data-theme="dark"] .move-item {
+            background: var(--gray-600);
+        }
+
+        .move-item:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .move-player {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--border-radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: var(--font-size-lg);
+        }
+
+        .move-player.x {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .move-player.o {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+        }
+
+        .move-details {
+            flex-grow: 1;
+        }
+
+        .move-position {
+            font-size: var(--font-size-sm);
+            color: var(--gray-600);
+        }
+
+        [data-theme="dark"] .move-position {
+            color: var(--gray-400);
+        }
+
+        .move-time {
+            font-size: var(--font-size-xs);
+            color: var(--gray-500);
+        }
+
+        .empty-moves {
+            text-align: center;
+            color: var(--gray-500);
+            padding: 2rem 0;
+            font-style: italic;
+        }
+
+        .hint-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            min-width: 200px;
+        }
+
+        .hint-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--warning-color), #f97316);
+            border: none;
+            border-radius: var(--border-radius-lg);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hint-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hint-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hint-text {
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: var(--border-radius-lg);
+            border-right: 4px solid var(--primary-color);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+        }
+
+        .hint-flash {
+            animation: pulse 1s ease-in-out 3;
+        }
+
+        /* کنترل‌های بازی */
+        .game-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-radius: var(--border-radius-xl);
+        }
+
+        [data-theme="dark"] .game-controls {
+            background: var(--gray-700);
+        }
+
+        @media (max-width: 768px) {
+            .game-controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .control-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: var(--border-radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: var(--font-size-base);
+        }
+
+        .btn-new-game {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-undo {
+            background: linear-gradient(135deg, var(--gray-300), var(--gray-400));
+            color: var(--gray-800);
+        }
+
+        .btn-redo {
+            background: linear-gradient(135deg, var(--gray-400), var(--gray-500));
+            color: var(--gray-800);
+        }
+
+        .btn-reset-score {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+            color: white;
+        }
+
+        .control-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* وضعیت بازی */
+        .game-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius-xl);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .status-message {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+        }
+
+        .status-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-quick-restart {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--border-radius-lg);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-quick-restart:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* پنل تنظیمات */
+        .settings-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .settings-card,
+        .help-card,
+        .records-card {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        [data-theme="dark"] .settings-card,
+        [data-theme="dark"] .help-card,
+        [data-theme="dark"] .records-card {
+            background: var(--gray-800);
+        }
+
+        .settings-card h4,
+        .help-card h4,
+        .records-card h4 {
+            font-size: var(--font-size-lg);
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        [data-theme="dark"] .settings-card h4,
+        [data-theme="dark"] .help-card h4,
+        [data-theme="dark"] .records-card h4 {
+            color: var(--gray-100);
+        }
+
+        .setting-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .setting-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--gray-700);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] .setting-label {
+            color: var(--gray-300);
+        }
+
+        .setting-select {
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius-md);
+            border: 2px solid var(--gray-300);
+            background: white;
+            color: var(--gray-800);
+            font-family: var(--font-family);
+            font-size: var(--font-size-sm);
+            transition: all var(--transition-fast);
+            width: 150px;
+        }
+
+        [data-theme="dark"] .setting-select {
+            background: var(--gray-700);
+            border-color: var(--gray-600);
+            color: var(--gray-100);
+        }
+
+        .setting-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .setting-range {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .range-slider {
+            flex-grow: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--gray-300);
+            border-radius: var(--border-radius-full);
+            outline: none;
+        }
+
+        [data-theme="dark"] .range-slider {
+            background: var(--gray-600);
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-fast);
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .setting-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        /* راهنمای بازی */
+        .help-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .help-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .help-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-100);
+            border-radius: var(--border-radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        [data-theme="dark"] .help-icon {
+            background: var(--gray-700);
+        }
+
+        .help-text {
+            flex-grow: 1;
+        }
+
+        .help-text strong {
+            display: block;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        [data-theme="dark"] .help-text strong {
+            color: var(--gray-100);
+        }
+
+        .help-text p {
+            color: var(--gray-600);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+        }
+
+        [data-theme="dark"] .help-text p {
+            color: var(--gray-400);
+        }
+
+        /* رکوردهای برتر */
+        .records-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .record-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: var(--gray-50);
+            border-radius: var(--border-radius-lg);
+            transition: all var(--transition-fast);
+        }
+
+        [data-theme="dark"] .record-item {
+            background: var(--gray-700);
+        }
+
+        .record-item:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .record-rank {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .record-info {
+            flex-grow: 1;
+        }
+
+        .record-player {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        [data-theme="dark"] .record-player {
+            color: var(--gray-100);
+        }
+
+        .record-score {
+            font-size: var(--font-size-sm);
+            color: var(--gray-600);
+        }
+
+        [data-theme="dark"] .record-score {
+            color: var(--gray-400);
+        }
+
+        .btn-view-all {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--gray-100);
+            border: none;
+            border-radius: var(--border-radius-lg);
+            color: var(--gray-700);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        [data-theme="dark"] .btn-view-all {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .btn-view-all:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* مودال‌ها */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius-2xl);
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow-2xl);
+            animation: slideUp 0.4s ease-out;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .modal-content {
+            background: var(--gray-800);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: var(--font-size-2xl);
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--border-radius-full);
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .winner-celebration,
+        .draw-celebration {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .winner-icon,
+        .draw-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            border-radius: var(--border-radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            animation: bounce 1s infinite alternate;
+        }
+
+        .winner-icon {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+        }
+
+        .draw-icon {
+            background: linear-gradient(135deg, var(--gray-400), var(--gray-500));
+            color: white;
+            box-shadow: 0 10px 30px rgba(107, 114, 128, 0.3);
+        }
+
+        .winner-message h3,
+        .draw-message h3 {
+            font-size: var(--font-size-2xl);
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        [data-theme="dark"] .winner-message h3,
+        [data-theme="dark"] .draw-message h3 {
+            color: var(--gray-100);
+        }
+
+        .winner-message p,
+        .draw-message p {
+            color: var(--gray-600);
+            font-size: var(--font-size-lg);
+        }
+
+        [data-theme="dark"] .winner-message p,
+        [data-theme="dark"] .draw-message p {
+            color: var(--gray-400);
+        }
+
+        .winner-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .winner-stat {
+            text-align: center;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: var(--border-radius-lg);
+        }
+
+        [data-theme="dark"] .winner-stat {
+            background: var(--gray-700);
+        }
+
+        .winner-stat i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            background: var(--gray-50);
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        [data-theme="dark"] .modal-footer {
+            background: var(--gray-700);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            font-size: var(--font-size-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        [data-theme="dark"] .btn-secondary {
+            background: var(--gray-600);
+            color: var(--gray-100);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        [data-theme="dark"] .btn-outline {
+            border-color: var(--gray-600);
+            color: var(--gray-300);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* کنفتی */
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1001;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        /* کنترل‌های موبایل */
+        .mobile-controls {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        [data-theme="dark"] .mobile-controls {
+            background: var(--gray-800);
+        }
+
+        .mobile-controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .mobile-btn {
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--border-radius-lg);
+            background: var(--gray-100);
+            color: var(--gray-700);
+            font-size: var(--font-size-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        [data-theme="dark"] .mobile-btn {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .mobile-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .mobile-btn i {
+            font-size: 1.25rem;
+        }
+
+        /* انیمیشن‌های کلیدی */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-20px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
         @keyframes winLine {
             0% { width: 0; opacity: 0; }
             100% { width: 100%; opacity: 1; }
         }
-        
+
         @keyframes winCell {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); box-shadow: var(--shadow-md); }
+            50% { transform: scale(1.2); box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
+            100% { transform: scale(1); box-shadow: var(--shadow-md); }
         }
-        
-        @keyframes drawCells {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(1deg); }
-            75% { transform: rotate(-1deg); }
-        }
-        
+
         @keyframes moveIndicator {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-5px); }
             100% { transform: translateY(0px); }
         }
-        
+
         @keyframes confetti {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+            0% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(500px) rotate(360deg); 
+                opacity: 0; 
+            }
         }
-        
+
         @keyframes scoreIncrement {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.5); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); color: inherit; }
+            50% { transform: scale(1.5); color: var(--success-color); }
+            100% { transform: scale(1); color: inherit; }
         }
-        
+
         @keyframes aiThinking {
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
         }
-        
-        .win-line {
-            position: absolute;
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* اسکرول بار سفارشی */
+        ::-webkit-scrollbar {
+            width: 8px;
             height: 8px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-            border-radius: 4px;
-            z-index: 1;
-            animation: winLine 1s ease-out forwards;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
-        
-        .win-cell {
-            animation: winCell 0.5s ease-in-out 3;
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: var(--border-radius-full);
         }
-        
-        .draw-animation {
-            animation: drawCells 0.5s ease-in-out 3;
+
+        [data-theme="dark"] ::-webkit-scrollbar-track {
+            background: var(--gray-700);
         }
-        
-        .current-turn {
-            animation: moveIndicator 2s ease-in-out infinite;
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-400);
+            border-radius: var(--border-radius-full);
         }
-        
-        .score-updated {
-            animation: scoreIncrement 0.5s ease-in-out;
+
+        [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: var(--gray-500);
         }
-        
-        .ai-thinking {
-            animation: aiThinking 1s ease-in-out infinite;
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
         }
-        
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
-            border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
+
+        /* افکت‌های خاص */
+        .glow {
+            filter: drop-shadow(0 0 10px currentColor);
         }
-        
-        .cell-placeholder {
-            opacity: 0.3;
-            animation: pulse 2s infinite;
+
+        .blur-bg {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
-        
-        .streak-badge {
-            background: linear-gradient(45deg, #f59e0b, #f97316);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            animation: pulse 2s infinite;
+
+        /* کلاس‌های کمکی */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 1rem; }
+        .mt-4 { margin-top: 1.5rem; }
+        .mt-5 { margin-top: 2rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 1rem; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .mb-5 { margin-bottom: 2rem; }
+        .d-none { display: none !important; }
+        .d-flex { display: flex !important; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .align-center { align-items: center; }
+        .flex-column { flex-direction: column; }
+        .w-100 { width: 100%; }
+        .h-100 { height: 100%; }
+        .position-relative { position: relative; }
+        .position-absolute { position: absolute; }
+        .overflow-hidden { overflow: hidden; }
+        .cursor-pointer { cursor: pointer; }
+        .cursor-not-allowed { cursor: not-allowed; }
+        .user-select-none { user-select: none; }
+        .transition-all { transition: all var(--transition-normal); }
+
+        /* ریسپانسیو */
+        @media (max-width: 768px) {
+            .game-header {
+                padding: 0.75rem 0;
+            }
+            
+            .game-navbar {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .game-title h1 {
+                font-size: var(--font-size-xl);
+            }
+            
+            .game-center {
+                padding: 1rem;
+            }
+            
+            .game-board {
+                max-width: 100%;
+                padding: 10px;
+                gap: 8px;
+            }
+            
+            .cell {
+                font-size: 3rem;
+            }
+            
+            .game-controls {
+                padding: 1rem;
+                gap: 0.5rem;
+            }
+            
+            .control-btn {
+                padding: 0.75rem;
+                font-size: var(--font-size-sm);
+            }
+            
+            .game-status {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .status-actions {
+                width: 100%;
+            }
+            
+            .btn-quick-restart {
+                width: 100%;
+            }
+            
+            .modal-content {
+                max-width: 100%;
+                margin: 1rem;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
         }
-        
-        .timer-pulse {
-            animation: pulse 1s infinite;
+
+        @media (max-width: 480px) {
+            .cell {
+                font-size: 2.5rem;
+            }
+            
+            .game-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .board-footer {
+                gap: 1rem;
+            }
+            
+            .hint-section {
+                min-width: auto;
+            }
         }
-        
-        .sound-toggle.active i {
-            animation: rotate 2s linear infinite;
-        }
-        
-        .hint-flash {
-            animation: pulse 1s ease-in-out 3;
+
+        /* چاپ */
+        @media print {
+            .game-controls-top,
+            .game-controls,
+            .mobile-controls,
+            .modal {
+                display: none !important;
+            }
+            
+            .game-board {
+                box-shadow: none;
+                border: 2px solid #000;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- صفحه بارگذاری بازی -->
+    <!-- صفحه بارگذاری -->
     <div id="game-loading" class="game-loading">
         <div class="game-loader">
             <div class="tic-tac-toe-loader">
@@ -143,7 +2003,10 @@
                 <div class="cell-loader x-loader">×</div>
                 <div class="cell-loader o-loader">○</div>
             </div>
-            <p class="game-loading-text">در حال بارگذاری بازی دوز...</p>
+            <p class="game-loading-text">در حال بارگذاری بازی دوز حرفه‌ای...</p>
+            <div class="loading-progress">
+                <div class="loading-progress-bar" id="loadingProgress"></div>
+            </div>
         </div>
     </div>
 
@@ -151,7 +2014,7 @@
     <header class="game-header">
         <div class="container">
             <div class="game-navbar">
-                <a href="index.html" class="back-to-home">
+                <a href="index.html" class="back-to-home" aria-label="بازگشت به صفحه اصلی">
                     <i class="fas fa-arrow-right"></i>
                     <span>بازگشت به خانه</span>
                 </a>
@@ -159,14 +2022,14 @@
                 <div class="game-title">
                     <h1>
                         <i class="fas fa-times x-title"></i>
-                        بازی دوز
+                        بازی دوز حرفه‌ای
                         <i class="fas fa-circle o-title"></i>
                     </h1>
-                    <p class="game-subtitle">کلاسیک ترین بازی استراتژیک</p>
+                    <p class="game-subtitle">کلاسیک‌ترین بازی استراتژیک با قابلیت‌های پیشرفته</p>
                 </div>
                 
                 <div class="game-controls-top">
-                    <button class="sound-toggle" id="soundToggle" aria-label="صدای بازی">
+                    <button class="sound-toggle" id="soundToggle" aria-label="کنترل صدا">
                         <i class="fas fa-volume-up"></i>
                     </button>
                     <button class="theme-toggle-game" id="themeToggleGame" aria-label="تغییر تم">
@@ -193,7 +2056,7 @@
                                 <h3 class="player-name" id="playerXName">بازیکن X</h3>
                                 <div class="player-type">
                                     <span class="player-type-badge human">انسان</span>
-                                    <button class="change-type-btn" data-player="x">
+                                    <button class="change-type-btn" data-player="x" aria-label="تغییر نوع بازیکن">
                                         <i class="fas fa-sync-alt"></i>
                                     </button>
                                 </div>
@@ -210,7 +2073,7 @@
                                 <div class="stat-value" id="playerXWins">0</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-label">تعداد بازی</div>
+                                <div class="stat-label">بازی‌ها</div>
                                 <div class="stat-value" id="playerXGames">0</div>
                             </div>
                         </div>
@@ -220,7 +2083,7 @@
                                 <i class="fas fa-chess-queen"></i>
                                 <span>نوبت شماست</span>
                             </div>
-                            <div class="thinking-indicator ai-thinking" id="xThinking" style="display: none;">
+                            <div class="thinking-indicator ai-thinking d-none" id="xThinking">
                                 <i class="fas fa-brain"></i>
                                 <span>در حال فکر کردن...</span>
                             </div>
@@ -237,7 +2100,7 @@
                                 <h3 class="player-name" id="playerOName">بازیکن O</h3>
                                 <div class="player-type">
                                     <span class="player-type-badge human">انسان</span>
-                                    <button class="change-type-btn" data-player="o">
+                                    <button class="change-type-btn" data-player="o" aria-label="تغییر نوع بازیکن">
                                         <i class="fas fa-sync-alt"></i>
                                     </button>
                                 </div>
@@ -254,7 +2117,7 @@
                                 <div class="stat-value" id="playerOWins">0</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-label">تعداد بازی</div>
+                                <div class="stat-label">بازی‌ها</div>
                                 <div class="stat-value" id="playerOGames">0</div>
                             </div>
                         </div>
@@ -264,7 +2127,7 @@
                                 <i class="fas fa-clock"></i>
                                 <span>منتظر نوبت</span>
                             </div>
-                            <div class="thinking-indicator ai-thinking" id="oThinking" style="display: none;">
+                            <div class="thinking-indicator ai-thinking d-none" id="oThinking">
                                 <i class="fas fa-brain"></i>
                                 <span>در حال فکر کردن...</span>
                             </div>
@@ -299,7 +2162,7 @@
                                 </div>
                                 <div>
                                     <div class="stat-number" id="totalTime">0</div>
-                                    <div class="stat-label">دقیقه بازی</div>
+                                    <div class="stat-label">دقیقه</div>
                                 </div>
                             </div>
                         </div>
@@ -351,19 +2214,16 @@
                         </div>
                         
                         <div class="game-board" id="gameBoard">
-                            <!-- خطوط برنده (پویا اضافه می‌شوند) -->
-                            <div id="winLines"></div>
-                            
                             <!-- سلول‌های بازی -->
-                            <div class="cell" data-index="0"></div>
-                            <div class="cell" data-index="1"></div>
-                            <div class="cell" data-index="2"></div>
-                            <div class="cell" data-index="3"></div>
-                            <div class="cell" data-index="4"></div>
-                            <div class="cell" data-index="5"></div>
-                            <div class="cell" data-index="6"></div>
-                            <div class="cell" data-index="7"></div>
-                            <div class="cell" data-index="8"></div>
+                            <div class="cell" data-index="0" aria-label="سلول ۱"></div>
+                            <div class="cell" data-index="1" aria-label="سلول ۲"></div>
+                            <div class="cell" data-index="2" aria-label="سلول ۳"></div>
+                            <div class="cell" data-index="3" aria-label="سلول ۴"></div>
+                            <div class="cell" data-index="4" aria-label="سلول ۵"></div>
+                            <div class="cell" data-index="5" aria-label="سلول ۶"></div>
+                            <div class="cell" data-index="6" aria-label="سلول ۷"></div>
+                            <div class="cell" data-index="7" aria-label="سلول ۸"></div>
+                            <div class="cell" data-index="8" aria-label="سلول ۹"></div>
                         </div>
                         
                         <div class="board-footer">
@@ -375,12 +2235,12 @@
                             </div>
                             
                             <div class="hint-section">
-                                <button class="hint-btn" id="hintBtn" title="دریافت راهنمایی">
+                                <button class="hint-btn" id="hintBtn" aria-label="دریافت راهنمایی برای حرکت بعدی">
                                     <i class="fas fa-lightbulb"></i>
                                     راهنمایی
                                 </button>
                                 <div class="hint-text" id="hintText">
-                                    اولین حرکت خود را در مرکز انجام دهید
+                                    برای شروع، مرکز یا گوشه‌ها را انتخاب کنید
                                 </div>
                             </div>
                         </div>
@@ -388,19 +2248,19 @@
                     
                     <!-- کنترل‌های بازی -->
                     <div class="game-controls">
-                        <button class="control-btn btn-new-game" id="newGameBtn">
+                        <button class="control-btn btn-new-game" id="newGameBtn" aria-label="شروع بازی جدید">
                             <i class="fas fa-plus-circle"></i>
                             بازی جدید
                         </button>
-                        <button class="control-btn btn-undo" id="undoBtn" disabled>
+                        <button class="control-btn btn-undo" id="undoBtn" disabled aria-label="بازگشت به حرکت قبلی">
                             <i class="fas fa-undo"></i>
-                            بازگشت حرکت
+                            بازگشت
                         </button>
-                        <button class="control-btn btn-redo" id="redoBtn" disabled>
+                        <button class="control-btn btn-redo" id="redoBtn" disabled aria-label="تکرار حرکت">
                             <i class="fas fa-redo"></i>
-                            تکرار حرکت
+                            تکرار
                         </button>
-                        <button class="control-btn btn-reset-score" id="resetScoreBtn">
+                        <button class="control-btn btn-reset-score" id="resetScoreBtn" aria-label="بازنشانی امتیازات">
                             <i class="fas fa-trash-alt"></i>
                             ریست امتیاز
                         </button>
@@ -413,7 +2273,7 @@
                             <span id="statusText">بازی را شروع کنید! نوبت بازیکن X است.</span>
                         </div>
                         <div class="status-actions">
-                            <button class="btn-quick-restart" id="quickRestartBtn">
+                            <button class="btn-quick-restart" id="quickRestartBtn" aria-label="شروع مجدد سریع">
                                 <i class="fas fa-sync-alt"></i>
                                 شروع سریع
                             </button>
@@ -430,7 +2290,7 @@
                         <div class="setting-group">
                             <label class="setting-label">
                                 <span>اندازه تخته:</span>
-                                <select id="boardSize" class="setting-select">
+                                <select id="boardSize" class="setting-select" aria-label="انتخاب اندازه تخته بازی">
                                     <option value="3">۳×۳ (کلاسیک)</option>
                                     <option value="4">۴×۴ (پیشرفته)</option>
                                     <option value="5">۵×۵ (حرفه‌ای)</option>
@@ -440,38 +2300,38 @@
                         
                         <div class="setting-group">
                             <label class="setting-label">
-                                <span>زمان هر حرکت (ثانیه):</span>
+                                <span>زمان هر حرکت:</span>
                                 <div class="setting-range">
-                                    <input type="range" id="moveTime" min="5" max="60" value="30" class="range-slider">
+                                    <input type="range" id="moveTime" min="5" max="60" value="30" class="range-slider" aria-label="تنظیم زمان هر حرکت">
                                     <span id="moveTimeValue">30</span>
                                 </div>
                             </label>
                         </div>
                         
                         <div class="setting-group">
-                            <label class="setting-label">
-                                <input type="checkbox" id="soundEffects" checked>
+                            <label class="setting-label cursor-pointer">
+                                <input type="checkbox" id="soundEffects" checked aria-label="فعال‌سازی صداها">
                                 <span>صدای بازی</span>
                             </label>
                         </div>
                         
                         <div class="setting-group">
-                            <label class="setting-label">
-                                <input type="checkbox" id="animations" checked>
+                            <label class="setting-label cursor-pointer">
+                                <input type="checkbox" id="animations" checked aria-label="فعال‌سازی انیمیشن‌ها">
                                 <span>انیمیشن‌ها</span>
                             </label>
                         </div>
                         
                         <div class="setting-group">
-                            <label class="setting-label">
-                                <input type="checkbox" id="showHints" checked>
+                            <label class="setting-label cursor-pointer">
+                                <input type="checkbox" id="showHints" checked aria-label="نمایش راهنمایی">
                                 <span>نمایش راهنمایی</span>
                             </label>
                         </div>
                         
                         <div class="setting-group">
-                            <label class="setting-label">
-                                <input type="checkbox" id="highlightMoves" checked>
+                            <label class="setting-label cursor-pointer">
+                                <input type="checkbox" id="highlightMoves" checked aria-label="برجسته کردن حرکات">
                                 <span>هایلایت حرکات</span>
                             </label>
                         </div>
@@ -547,7 +2407,7 @@
                             </div>
                         </div>
                         
-                        <button class="btn-view-all" id="viewAllRecordsBtn">
+                        <button class="btn-view-all" id="viewAllRecordsBtn" aria-label="مشاهده همه رکوردها">
                             <i class="fas fa-list"></i>
                             مشاهده همه رکوردها
                         </button>
@@ -557,12 +2417,30 @@
         </div>
     </main>
 
+    <!-- کنترل‌های موبایل -->
+    <div class="mobile-controls d-none">
+        <div class="mobile-controls-grid">
+            <button class="mobile-btn active" data-action="home">
+                <i class="fas fa-home"></i>
+                خانه
+            </button>
+            <button class="mobile-btn" data-action="stats">
+                <i class="fas fa-chart-bar"></i>
+                آمار
+            </button>
+            <button class="mobile-btn" data-action="settings">
+                <i class="fas fa-cog"></i>
+                تنظیمات
+            </button>
+        </div>
+    </div>
+
     <!-- مودال برنده -->
-    <div class="modal" id="winnerModal">
+    <div class="modal" id="winnerModal" role="dialog" aria-labelledby="winnerTitle" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="winnerTitle">🎉 تبریک! شما برنده شدید! 🎉</h2>
-                <button class="modal-close" id="modalClose">&times;</button>
+                <button class="modal-close" id="modalClose" aria-label="بستن پنجره">&times;</button>
             </div>
             
             <div class="modal-body">
@@ -581,7 +2459,7 @@
                         <i class="fas fa-bolt"></i>
                         <div>
                             <div class="stat-value" id="winnerMoves">5</div>
-                            <div class="stat-label">تعداد حرکات</div>
+                            <div class="stat-label">حرکات</div>
                         </div>
                     </div>
                     <div class="winner-stat">
@@ -619,11 +2497,11 @@
     </div>
 
     <!-- مودال تساوی -->
-    <div class="modal" id="drawModal">
+    <div class="modal" id="drawModal" role="dialog" aria-labelledby="drawTitle" aria-hidden="true">
         <div class="modal-content draw-modal">
             <div class="modal-header">
-                <h2>🤝 بازی مساوی شد!</h2>
-                <button class="modal-close">&times;</button>
+                <h2 id="drawTitle">🤝 بازی مساوی شد!</h2>
+                <button class="modal-close" aria-label="بستن پنجره">&times;</button>
             </div>
             
             <div class="modal-body">
@@ -660,91 +2538,1270 @@
     <audio id="errorSound" preload="auto">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
     </audio>
+    <audio id="hintSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkle-sweep-292.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- اسکریپت بازی -->
-    <script src="tic-tac-toe.js"></script>
-    
     <script>
-        // اسکریپت‌های اضافی برای انیمیشن‌ها و صداها
-        document.addEventListener('DOMContentLoaded', function() {
-            // مدیریت بارگذاری بازی
-            setTimeout(() => {
-                document.getElementById('game-loading').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('game-loading').style.display = 'none';
-                }, 500);
-            }, 1000);
-
-            // مدیریت صداها
-            const clickSound = document.getElementById('clickSound');
-            const winSound = document.getElementById('winSound');
-            const drawSound = document.getElementById('drawSound');
-            const errorSound = document.getElementById('errorSound');
+        // بازی دوز حرفه‌ای - نسخه کامل
+        (function() {
+            'use strict';
             
-            let soundEnabled = true;
-            
-            document.getElementById('soundToggle').addEventListener('click', function() {
-                soundEnabled = !soundEnabled;
-                const icon = this.querySelector('i');
-                if (soundEnabled) {
-                    icon.classList.remove('fa-volume-mute');
-                    icon.classList.add('fa-volume-up');
-                    this.classList.add('active');
-                } else {
-                    icon.classList.remove('fa-volume-up');
-                    icon.classList.add('fa-volume-mute');
-                    this.classList.remove('active');
+            // متغیرهای اصلی بازی
+            const gameState = {
+                board: Array(9).fill(null),
+                currentPlayer: 'X',
+                gameActive: true,
+                gameMode: 'pvp', // pvp, easy, medium, hard
+                players: {
+                    X: { type: 'human', score: 0, wins: 0, games: 0 },
+                    O: { type: 'human', score: 0, wins: 0, games: 0 }
+                },
+                moveHistory: [],
+                moveHistoryIndex: -1,
+                timer: {
+                    startTime: null,
+                    elapsedSeconds: 0,
+                    interval: null
+                },
+                stats: {
+                    totalGames: 0,
+                    totalDraws: 0,
+                    totalTime: 0,
+                    winStreak: 0,
+                    bestWinStreak: 0,
+                    fastestWin: null
+                },
+                sounds: {
+                    enabled: true,
+                    click: null,
+                    win: null,
+                    draw: null,
+                    error: null,
+                    hint: null
+                },
+                settings: {
+                    animations: true,
+                    showHints: true,
+                    highlightMoves: true,
+                    moveTime: 30
                 }
-            });
+            };
             
-            // تابع پخش صدا
-            window.playSound = function(soundType) {
-                if (!soundEnabled) return;
+            // DOM Elements
+            const elements = {
+                // سلول‌های بازی
+                cells: [],
+                
+                // اطلاعات بازیکنان
+                playerXCard: document.getElementById('playerXCard'),
+                playerOCard: document.getElementById('playerOCard'),
+                playerXName: document.getElementById('playerXName'),
+                playerOName: document.getElementById('playerOName'),
+                playerXScore: document.getElementById('playerXScore'),
+                playerOScore: document.getElementById('playerOScore'),
+                playerXWins: document.getElementById('playerXWins'),
+                playerOWins: document.getElementById('playerOWins'),
+                playerXGames: document.getElementById('playerXGames'),
+                playerOGames: document.getElementById('playerOGames'),
+                
+                // نشانگرهای نوبت
+                xTurnIndicator: document.getElementById('xTurnIndicator'),
+                oTurnIndicator: document.getElementById('oTurnIndicator'),
+                xThinking: document.getElementById('xThinking'),
+                oThinking: document.getElementById('oThinking'),
+                
+                // آمار
+                totalGames: document.getElementById('totalGames'),
+                totalDraws: document.getElementById('totalDraws'),
+                totalTime: document.getElementById('totalTime'),
+                winStreak: document.getElementById('winStreak'),
+                fastestWin: document.getElementById('fastestWin'),
+                
+                // کنترل‌های بازی
+                gameBoard: document.getElementById('gameBoard'),
+                gameTimer: document.getElementById('gameTimer'),
+                movesList: document.getElementById('movesList'),
+                hintText: document.getElementById('hintText'),
+                statusText: document.getElementById('statusText'),
+                
+                // دکمه‌ها
+                newGameBtn: document.getElementById('newGameBtn'),
+                undoBtn: document.getElementById('undoBtn'),
+                redoBtn: document.getElementById('redoBtn'),
+                resetScoreBtn: document.getElementById('resetScoreBtn'),
+                quickRestartBtn: document.getElementById('quickRestartBtn'),
+                hintBtn: document.getElementById('hintBtn'),
+                
+                // حالت‌های بازی
+                modeButtons: document.querySelectorAll('.mode-btn'),
+                
+                // تنظیمات
+                soundToggle: document.getElementById('soundToggle'),
+                themeToggleGame: document.getElementById('themeToggleGame'),
+                boardSize: document.getElementById('boardSize'),
+                moveTime: document.getElementById('moveTime'),
+                moveTimeValue: document.getElementById('moveTimeValue'),
+                soundEffects: document.getElementById('soundEffects'),
+                animations: document.getElementById('animations'),
+                showHints: document.getElementById('showHints'),
+                highlightMoves: document.getElementById('highlightMoves'),
+                
+                // مودال‌ها
+                winnerModal: document.getElementById('winnerModal'),
+                drawModal: document.getElementById('drawModal'),
+                
+                // صداها
+                clickSound: document.getElementById('clickSound'),
+                winSound: document.getElementById('winSound'),
+                drawSound: document.getElementById('drawSound'),
+                errorSound: document.getElementById('errorSound'),
+                hintSound: document.getElementById('hintSound')
+            };
+            
+            // ترکیب‌های برنده
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // ردیف‌ها
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // ستون‌ها
+                [0, 4, 8], [2, 4, 6]             // قطرها
+            ];
+            
+            // هوش مصنوعی - الگوریتم Minimax
+            class TicTacToeAI {
+                constructor(difficulty) {
+                    this.difficulty = difficulty; // easy, medium, hard
+                    this.scores = {
+                        X: -10,
+                        O: 10,
+                        tie: 0
+                    };
+                }
+                
+                // انتخاب حرکت بر اساس سطح دشواری
+                getMove(board, player) {
+                    switch(this.difficulty) {
+                        case 'easy':
+                            return this.getRandomMove(board);
+                        case 'medium':
+                            return Math.random() > 0.5 ? 
+                                this.getBestMove(board, player) : 
+                                this.getRandomMove(board);
+                        case 'hard':
+                            return this.getBestMove(board, player);
+                        default:
+                            return this.getRandomMove(board);
+                    }
+                }
+                
+                // حرکت تصادفی
+                getRandomMove(board) {
+                    const availableMoves = board
+                        .map((cell, index) => cell === null ? index : null)
+                        .filter(index => index !== null);
+                    
+                    if (availableMoves.length === 0) return null;
+                    
+                    const randomIndex = Math.floor(Math.random() * availableMoves.length);
+                    return availableMoves[randomIndex];
+                }
+                
+                // بهترین حرکت با الگوریتم Minimax
+                getBestMove(board, player) {
+                    let bestScore = player === 'O' ? -Infinity : Infinity;
+                    let bestMove = null;
+                    
+                    for (let i = 0; i < board.length; i++) {
+                        if (board[i] === null) {
+                            board[i] = player;
+                            let score = this.minimax(board, 0, player === 'O' ? false : true);
+                            board[i] = null;
+                            
+                            if (player === 'O') {
+                                if (score > bestScore) {
+                                    bestScore = score;
+                                    bestMove = i;
+                                }
+                            } else {
+                                if (score < bestScore) {
+                                    bestScore = score;
+                                    bestMove = i;
+                                }
+                            }
+                        }
+                    }
+                    
+                    return bestMove;
+                }
+                
+                // الگوریتم Minimax
+                minimax(board, depth, isMaximizing) {
+                    const result = this.checkWinner(board);
+                    
+                    if (result !== null) {
+                        return this.scores[result];
+                    }
+                    
+                    if (isMaximizing) {
+                        let bestScore = -Infinity;
+                        for (let i = 0; i < board.length; i++) {
+                            if (board[i] === null) {
+                                board[i] = 'O';
+                                let score = this.minimax(board, depth + 1, false);
+                                board[i] = null;
+                                bestScore = Math.max(score, bestScore);
+                            }
+                        }
+                        return bestScore;
+                    } else {
+                        let bestScore = Infinity;
+                        for (let i = 0; i < board.length; i++) {
+                            if (board[i] === null) {
+                                board[i] = 'X';
+                                let score = this.minimax(board, depth + 1, true);
+                                board[i] = null;
+                                bestScore = Math.min(score, bestScore);
+                            }
+                        }
+                        return bestScore;
+                    }
+                }
+                
+                // بررسی برنده
+                checkWinner(board) {
+                    for (let pattern of winPatterns) {
+                        const [a, b, c] = pattern;
+                        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                            return board[a];
+                        }
+                    }
+                    
+                    if (!board.includes(null)) {
+                        return 'tie';
+                    }
+                    
+                    return null;
+                }
+            }
+            
+            // تابع‌های اصلی بازی
+            
+            /**
+             * مقداردهی اولیه بازی
+             */
+            function initGame() {
+                // ایجاد سلول‌های بازی
+                createBoardCells();
+                
+                // بارگذاری تنظیمات از localStorage
+                loadSettings();
+                
+                // بارگذاری آمار از localStorage
+                loadStats();
+                
+                // تنظیم event listeners
+                setupEventListeners();
+                
+                // شروع تایمر بارگذاری
+                simulateLoading();
+                
+                // بروزرسانی UI
+                updateUI();
+            }
+            
+            /**
+             * ایجاد سلول‌های بازی
+             */
+            function createBoardCells() {
+                elements.cells = document.querySelectorAll('.cell');
+                
+                elements.cells.forEach(cell => {
+                    cell.addEventListener('click', handleCellClick);
+                    cell.addEventListener('mouseenter', handleCellHover);
+                    cell.addEventListener('mouseleave', handleCellHover);
+                });
+            }
+            
+            /**
+             * تنظیم event listeners
+             */
+            function setupEventListeners() {
+                // دکمه‌های کنترل بازی
+                elements.newGameBtn.addEventListener('click', startNewGame);
+                elements.undoBtn.addEventListener('click', undoMove);
+                elements.redoBtn.addEventListener('click', redoMove);
+                elements.resetScoreBtn.addEventListener('click', resetScores);
+                elements.quickRestartBtn.addEventListener('click', quickRestart);
+                elements.hintBtn.addEventListener('click', showHint);
+                
+                // دکمه‌های حالت بازی
+                elements.modeButtons.forEach(btn => {
+                    btn.addEventListener('click', () => changeGameMode(btn.dataset.mode));
+                });
+                
+                // دکمه‌های تغییر نوع بازیکن
+                document.querySelectorAll('.change-type-btn').forEach(btn => {
+                    btn.addEventListener('click', () => togglePlayerType(btn.dataset.player));
+                });
+                
+                // تنظیمات
+                elements.soundToggle.addEventListener('click', toggleSound);
+                elements.themeToggleGame.addEventListener('click', toggleTheme);
+                elements.boardSize.addEventListener('change', changeBoardSize);
+                elements.moveTime.addEventListener('input', updateMoveTime);
+                elements.soundEffects.addEventListener('change', toggleSoundSetting);
+                elements.animations.addEventListener('change', toggleAnimations);
+                elements.showHints.addEventListener('change', toggleHints);
+                elements.highlightMoves.addEventListener('change', toggleHighlight);
+                
+                // تنظیمات اسلایدر زمان
+                elements.moveTime.addEventListener('input', () => {
+                    elements.moveTimeValue.textContent = elements.moveTime.value;
+                });
+                
+                // مودال‌ها
+                document.querySelectorAll('.modal-close').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        btn.closest('.modal').style.display = 'none';
+                    });
+                });
+                
+                document.getElementById('modalRematch').addEventListener('click', () => {
+                    elements.winnerModal.style.display = 'none';
+                    quickRestart();
+                });
+                
+                document.getElementById('modalNewGame').addEventListener('click', () => {
+                    elements.winnerModal.style.display = 'none';
+                    startNewGame();
+                });
+                
+                document.getElementById('modalShare').addEventListener('click', shareResult);
+                
+                document.getElementById('drawRematch').addEventListener('click', () => {
+                    elements.drawModal.style.display = 'none';
+                    quickRestart();
+                });
+                
+                // رکوردها
+                document.getElementById('viewAllRecordsBtn').addEventListener('click', showAllRecords);
+                
+                // کلیدهای کیبورد
+                document.addEventListener('keydown', handleKeyboardShortcuts);
+                
+                // ریسپانسیو
+                window.addEventListener('resize', handleResize);
+            }
+            
+            /**
+             * شبیه‌سازی بارگذاری
+             */
+            function simulateLoading() {
+                let progress = 0;
+                const progressBar = document.getElementById('loadingProgress');
+                const interval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 100) progress = 100;
+                    progressBar.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            document.getElementById('game-loading').style.opacity = '0';
+                            setTimeout(() => {
+                                document.getElementById('game-loading').style.display = 'none';
+                            }, 500);
+                        }, 500);
+                    }
+                }, 100);
+            }
+            
+            /**
+             * هندل کلیک روی سلول
+             */
+            function handleCellClick(event) {
+                if (!gameState.gameActive) return;
+                
+                const cell = event.currentTarget;
+                const index = parseInt(cell.dataset.index);
+                
+                // بررسی سلول خالی
+                if (gameState.board[index] !== null) {
+                    playSound('error');
+                    showMessage('این خانه قبلاً انتخاب شده!', 'error');
+                    return;
+                }
+                
+                // بررسی نوبت بازیکن انسانی
+                const currentPlayerType = gameState.players[gameState.currentPlayer].type;
+                if (currentPlayerType === 'ai') return;
+                
+                // انجام حرکت
+                makeMove(index);
+            }
+            
+            /**
+             * هندل هاور روی سلول
+             */
+            function handleCellHover(event) {
+                if (!gameState.settings.highlightMoves) return;
+                if (!gameState.gameActive) return;
+                
+                const cell = event.currentTarget;
+                const index = parseInt(cell.dataset.index);
+                
+                if (event.type === 'mouseenter' && gameState.board[index] === null) {
+                    cell.classList.add('cell-placeholder');
+                    cell.textContent = gameState.currentPlayer;
+                    cell.classList.add(gameState.currentPlayer.toLowerCase());
+                } else if (event.type === 'mouseleave') {
+                    cell.classList.remove('cell-placeholder');
+                    if (!cell.classList.contains('occupied')) {
+                        cell.textContent = '';
+                        cell.classList.remove('x', 'o');
+                    }
+                }
+            }
+            
+            /**
+             * انجام حرکت
+             */
+            function makeMove(index) {
+                // ذخیره حرکت در تاریخچه
+                const move = {
+                    player: gameState.currentPlayer,
+                    position: index,
+                    time: gameState.timer.elapsedSeconds,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // اضافه کردن به تاریخچه
+                if (gameState.moveHistoryIndex < gameState.moveHistory.length - 1) {
+                    // اگر از undo برگشتیم، حرکات بعدی را حذف می‌کنیم
+                    gameState.moveHistory = gameState.moveHistory.slice(0, gameState.moveHistoryIndex + 1);
+                }
+                
+                gameState.moveHistory.push(move);
+                gameState.moveHistoryIndex = gameState.moveHistory.length - 1;
+                
+                // بروزرسانی تخته
+                gameState.board[index] = gameState.currentPlayer;
+                
+                // پخش صدا
+                playSound('click');
+                
+                // بروزرسانی UI
+                updateBoard();
+                updateMoveHistory();
+                updateControls();
+                
+                // بررسی برنده
+                const winner = checkWinner();
+                
+                if (winner) {
+                    handleGameEnd(winner);
+                } else if (isBoardFull()) {
+                    handleGameEnd('tie');
+                } else {
+                    // تغییر نوبت
+                    switchPlayer();
+                    
+                    // اگر نوبت AI است
+                    if (gameState.players[gameState.currentPlayer].type === 'ai' && gameState.gameActive) {
+                        setTimeout(() => makeAIMove(), 500);
+                    }
+                }
+            }
+            
+            /**
+             * حرکت هوش مصنوعی
+             */
+            function makeAIMove() {
+                if (!gameState.gameActive) return;
+                
+                // نمایش وضعیت فکر کردن
+                showThinkingIndicator(true);
+                
+                // تاخیر برای طبیعی‌تر شدن
+                setTimeout(() => {
+                    const ai = new TicTacToeAI(gameState.gameMode);
+                    const moveIndex = ai.getMove(gameState.board, gameState.currentPlayer);
+                    
+                    if (moveIndex !== null && moveIndex !== undefined) {
+                        makeMove(moveIndex);
+                    }
+                    
+                    showThinkingIndicator(false);
+                }, 1000);
+            }
+            
+            /**
+             * نمایش نشانگر فکر کردن
+             */
+            function showThinkingIndicator(show) {
+                const indicator = gameState.currentPlayer === 'X' ? elements.xThinking : elements.oThinking;
+                
+                if (show) {
+                    indicator.classList.remove('d-none');
+                    elements.statusText.textContent = `هوش مصنوعی در حال فکر کردن...`;
+                } else {
+                    indicator.classList.add('d-none');
+                    updateStatusMessage();
+                }
+            }
+            
+            /**
+             * بررسی برنده
+             */
+            function checkWinner() {
+                for (let pattern of winPatterns) {
+                    const [a, b, c] = pattern;
+                    if (gameState.board[a] && 
+                        gameState.board[a] === gameState.board[b] && 
+                        gameState.board[a] === gameState.board[c]) {
+                        return gameState.board[a];
+                    }
+                }
+                return null;
+            }
+            
+            /**
+             * بررسی پر بودن تخته
+             */
+            function isBoardFull() {
+                return !gameState.board.includes(null);
+            }
+            
+            /**
+             * تغییر نوبت بازیکن
+             */
+            function switchPlayer() {
+                gameState.currentPlayer = gameState.currentPlayer === 'X' ? 'O' : 'X';
+                updatePlayerCards();
+                updateStatusMessage();
+            }
+            
+            /**
+             * هندل پایان بازی
+             */
+            function handleGameEnd(result) {
+                gameState.gameActive = false;
+                stopTimer();
+                
+                if (result === 'tie') {
+                    // بازی مساوی
+                    gameState.stats.totalDraws++;
+                    playSound('draw');
+                    showDrawModal();
+                    updateStats();
+                    saveStats();
+                } else {
+                    // یک بازیکن برنده شده
+                    const winner = result;
+                    const moves = gameState.moveHistory.filter(m => m.player === winner).length;
+                    const time = gameState.timer.elapsedSeconds;
+                    
+                    // بروزرسانی آمار
+                    gameState.players[winner].score += 10;
+                    gameState.players[winner].wins++;
+                    gameState.stats.winStreak++;
+                    
+                    if (gameState.stats.winStreak > gameState.stats.bestWinStreak) {
+                        gameState.stats.bestWinStreak = gameState.stats.winStreak;
+                    }
+                    
+                    if (!gameState.stats.fastestWin || time < gameState.stats.fastestWin) {
+                        gameState.stats.fastestWin = time;
+                    }
+                    
+                    // نمایش مودال برنده
+                    showWinnerModal(winner, moves, time);
+                    
+                    // پخش صدا و انیمیشن
+                    playSound('win');
+                    createConfetti();
+                    highlightWinningCells(result);
+                    
+                    // بروزرسانی UI و ذخیره
+                    updatePlayerStats();
+                    updateStats();
+                    saveStats();
+                }
+                
+                // افزایش تعداد بازی‌ها
+                gameState.players.X.games++;
+                gameState.players.O.games++;
+                gameState.stats.totalGames++;
+                
+                // ذخیره آمار
+                saveStats();
+                
+                // بروزرسانی کنترل‌ها
+                updateControls();
+            }
+            
+            /**
+             * هایلایت سلول‌های برنده
+             */
+            function highlightWinningCells(winner) {
+                let winningPattern = null;
+                
+                // پیدا کردن الگوی برنده
+                for (let pattern of winPatterns) {
+                    const [a, b, c] = pattern;
+                    if (gameState.board[a] === winner && 
+                        gameState.board[a] === gameState.board[b] && 
+                        gameState.board[a] === gameState.board[c]) {
+                        winningPattern = pattern;
+                        break;
+                    }
+                }
+                
+                if (!winningPattern) return;
+                
+                // اضافه کردن کلاس win-cell
+                winningPattern.forEach(index => {
+                    const cell = elements.cells[index];
+                    cell.classList.add('win-cell');
+                });
+                
+                // ایجاد خط برنده
+                drawWinningLine(winningPattern);
+            }
+            
+            /**
+             * رسم خط برنده
+             */
+            function drawWinningLine(pattern) {
+                const boardRect = elements.gameBoard.getBoundingClientRect();
+                const [a, b, c] = pattern;
+                
+                let lineClass = '';
+                let style = {};
+                
+                // تشخیص نوع خط (افقی، عمودی، مورب)
+                if (pattern[0] % 3 === pattern[1] % 3 && pattern[1] % 3 === pattern[2] % 3) {
+                    // عمودی
+                    lineClass = 'vertical-line';
+                    const col = pattern[0] % 3;
+                    style.left = `${(col * 33.33) + 16.66}%`;
+                    style.transform = 'translateX(-50%)';
+                } else if (Math.floor(pattern[0] / 3) === Math.floor(pattern[1] / 3) && 
+                          Math.floor(pattern[1] / 3) === Math.floor(pattern[2] / 3)) {
+                    // افقی
+                    lineClass = 'horizontal-line';
+                    const row = Math.floor(pattern[0] / 3);
+                    style.top = `${(row * 33.33) + 16.66}%`;
+                    style.transform = 'translateY(-50%)';
+                } else if (pattern.includes(0) && pattern.includes(4) && pattern.includes(8)) {
+                    // مورب اصلی
+                    lineClass = 'diagonal-line';
+                    style.transform = 'rotate(45deg) translateY(-50%)';
+                    style.top = '50%';
+                    style.left = '20px';
+                } else {
+                    // مورب فرعی
+                    lineClass = 'diagonal-line-2';
+                    style.transform = 'rotate(-45deg) translateY(-50%)';
+                    style.top = '50%';
+                    style.left = '20px';
+                }
+                
+                // ایجاد خط
+                const line = document.createElement('div');
+                line.className = `win-line ${lineClass}`;
+                Object.assign(line.style, style);
+                
+                elements.gameBoard.appendChild(line);
+            }
+            
+            /**
+             * شروع بازی جدید
+             */
+            function startNewGame(resetScores = false) {
+                // ریست تخته
+                gameState.board = Array(9).fill(null);
+                gameState.currentPlayer = 'X';
+                gameState.gameActive = true;
+                gameState.moveHistory = [];
+                gameState.moveHistoryIndex = -1;
+                
+                // ریست تایمر
+                resetTimer();
+                startTimer();
+                
+                // پاک کردن خطوط برنده قبلی
+                document.querySelectorAll('.win-line').forEach(line => line.remove());
+                
+                // بروزرسانی UI
+                updateBoard();
+                updateMoveHistory();
+                updatePlayerCards();
+                updateControls();
+                updateStatusMessage();
+                
+                // پخش صدا
+                playSound('click');
+                
+                // اگر حالت AI فعال است و نوبت AI است
+                if (gameState.players[gameState.currentPlayer].type === 'ai') {
+                    setTimeout(() => makeAIMove(), 1000);
+                }
+            }
+            
+            /**
+             * شروع سریع
+             */
+            function quickRestart() {
+                startNewGame();
+                showMessage('بازی جدید شروع شد!', 'success');
+            }
+            
+            /**
+             * بازگشت به حرکت قبلی
+             */
+            function undoMove() {
+                if (gameState.moveHistoryIndex < 0) return;
+                
+                const lastMove = gameState.moveHistory[gameState.moveHistoryIndex];
+                gameState.board[lastMove.position] = null;
+                gameState.moveHistoryIndex--;
+                
+                // تغییر نوبت
+                gameState.currentPlayer = lastMove.player;
+                gameState.gameActive = true;
+                
+                // پاک کردن خطوط برنده
+                document.querySelectorAll('.win-line').forEach(line => line.remove());
+                elements.cells.forEach(cell => cell.classList.remove('win-cell'));
+                
+                // بروزرسانی UI
+                updateBoard();
+                updateMoveHistory();
+                updatePlayerCards();
+                updateControls();
+                updateStatusMessage();
+                
+                playSound('click');
+            }
+            
+            /**
+             * تکرار حرکت
+             */
+            function redoMove() {
+                if (gameState.moveHistoryIndex >= gameState.moveHistory.length - 1) return;
+                
+                gameState.moveHistoryIndex++;
+                const nextMove = gameState.moveHistory[gameState.moveHistoryIndex];
+                gameState.board[nextMove.position] = nextMove.player;
+                
+                // تغییر نوبت
+                gameState.currentPlayer = nextMove.player === 'X' ? 'O' : 'X';
+                
+                // بررسی وضعیت بازی
+                const winner = checkWinner();
+                if (winner || isBoardFull()) {
+                    gameState.gameActive = false;
+                }
+                
+                // بروزرسانی UI
+                updateBoard();
+                updateMoveHistory();
+                updatePlayerCards();
+                updateControls();
+                updateStatusMessage();
+                
+                playSound('click');
+            }
+            
+            /**
+             * نمایش راهنمایی
+             */
+            function showHint() {
+                if (!gameState.gameActive || !gameState.settings.showHints) return;
+                
+                const ai = new TicTacToeAI('medium');
+                const hintIndex = ai.getMove(gameState.board, gameState.currentPlayer);
+                
+                if (hintIndex !== null) {
+                    // نمایش راهنمایی
+                    const row = Math.floor(hintIndex / 3) + 1;
+                    const col = (hintIndex % 3) + 1;
+                    elements.hintText.textContent = `پیشنهاد: ردیف ${row}, ستون ${col}`;
+                    elements.hintText.classList.add('hint-flash');
+                    
+                    // هایلایت موقت سلول
+                    elements.cells[hintIndex].classList.add('hint-flash');
+                    setTimeout(() => {
+                        elements.cells[hintIndex].classList.remove('hint-flash');
+                    }, 2000);
+                    
+                    playSound('hint');
+                    
+                    setTimeout(() => {
+                        elements.hintText.classList.remove('hint-flash');
+                    }, 3000);
+                }
+            }
+            
+            /**
+             * تغییر حالت بازی
+             */
+            function changeGameMode(mode) {
+                gameState.gameMode = mode;
+                
+                // بروزرسانی دکمه‌های فعال
+                elements.modeButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.mode === mode);
+                });
+                
+                // تنظیم نوع بازیکنان بر اساس حالت
+                switch(mode) {
+                    case 'pvp':
+                        gameState.players.X.type = 'human';
+                        gameState.players.O.type = 'human';
+                        break;
+                    case 'easy':
+                    case 'medium':
+                    case 'hard':
+                        gameState.players.X.type = 'human';
+                        gameState.players.O.type = 'ai';
+                        break;
+                }
+                
+                // بروزرسانی UI
+                updatePlayerTypes();
+                showMessage(`حالت بازی به "${getModeName(mode)}" تغییر کرد`, 'success');
+                
+                // شروع بازی جدید
+                startNewGame();
+            }
+            
+            /**
+             * تغییر نوع بازیکن
+             */
+            function togglePlayerType(player) {
+                const currentType = gameState.players[player].type;
+                gameState.players[player].type = currentType === 'human' ? 'ai' : 'human';
+                
+                updatePlayerTypes();
+                showMessage(`نوع بازیکن ${player} تغییر کرد`, 'success');
+            }
+            
+            /**
+             * تغییر تم
+             */
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                
+                // بروزرسانی آیکون
+                const icon = elements.themeToggleGame.querySelector('i');
+                icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                
+                // ذخیره در localStorage
+                localStorage.setItem('gameTheme', newTheme);
+            }
+            
+            /**
+             * تغییر اندازه تخته
+             */
+            function changeBoardSize() {
+                const size = parseInt(elements.boardSize.value);
+                showMessage(`تغییر اندازه تخته به ${size}×${size} در نسخه بعدی اضافه خواهد شد`, 'info');
+            }
+            
+            /**
+             * به‌روزرسانی زمان حرکت
+             */
+            function updateMoveTime() {
+                gameState.settings.moveTime = parseInt(elements.moveTime.value);
+                elements.moveTimeValue.textContent = gameState.settings.moveTime;
+                saveSettings();
+            }
+            
+            /**
+             * ریست امتیازات
+             */
+            function resetScores() {
+                if (!confirm('آیا از بازنشانی تمام امتیازات اطمینان دارید؟')) return;
+                
+                gameState.players.X.score = 0;
+                gameState.players.O.score = 0;
+                gameState.players.X.wins = 0;
+                gameState.players.O.wins = 0;
+                gameState.players.X.games = 0;
+                gameState.players.O.games = 0;
+                gameState.stats = {
+                    totalGames: 0,
+                    totalDraws: 0,
+                    totalTime: 0,
+                    winStreak: 0,
+                    bestWinStreak: 0,
+                    fastestWin: null
+                };
+                
+                updatePlayerStats();
+                updateStats();
+                saveStats();
+                
+                showMessage('تمام امتیازات بازنشانی شدند', 'success');
+            }
+            
+            // تابع‌های تایمر
+            
+            function startTimer() {
+                gameState.timer.startTime = Date.now();
+                gameState.timer.interval = setInterval(updateTimer, 1000);
+            }
+            
+            function stopTimer() {
+                if (gameState.timer.interval) {
+                    clearInterval(gameState.timer.interval);
+                    gameState.timer.interval = null;
+                }
+            }
+            
+            function resetTimer() {
+                stopTimer();
+                gameState.timer.elapsedSeconds = 0;
+                elements.gameTimer.textContent = '00:00';
+            }
+            
+            function updateTimer() {
+                gameState.timer.elapsedSeconds = Math.floor((Date.now() - gameState.timer.startTime) / 1000);
+                
+                const minutes = Math.floor(gameState.timer.elapsedSeconds / 60);
+                const seconds = gameState.timer.elapsedSeconds % 60;
+                
+                elements.gameTimer.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // پالس در ۱۰ ثانیه آخر
+                if (gameState.settings.moveTime - gameState.timer.elapsedSeconds <= 10) {
+                    elements.gameTimer.classList.add('timer-pulse');
+                } else {
+                    elements.gameTimer.classList.remove('timer-pulse');
+                }
+            }
+            
+            // تابع‌های صدا
+            
+            function toggleSound() {
+                gameState.sounds.enabled = !gameState.sounds.enabled;
+                
+                const icon = elements.soundToggle.querySelector('i');
+                if (gameState.sounds.enabled) {
+                    icon.className = 'fas fa-volume-up';
+                    elements.soundToggle.classList.add('active');
+                    playSound('click');
+                } else {
+                    icon.className = 'fas fa-volume-mute';
+                    elements.soundToggle.classList.remove('active');
+                }
+                
+                saveSettings();
+            }
+            
+            function toggleSoundSetting() {
+                gameState.sounds.enabled = elements.soundEffects.checked;
+                elements.soundToggle.classList.toggle('active', gameState.sounds.enabled);
+                
+                const icon = elements.soundToggle.querySelector('i');
+                icon.className = gameState.sounds.enabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+                
+                saveSettings();
+            }
+            
+            function playSound(type) {
+                if (!gameState.sounds.enabled) return;
                 
                 let sound;
-                switch(soundType) {
+                switch(type) {
                     case 'click':
-                        sound = clickSound;
+                        sound = elements.clickSound;
                         sound.volume = 0.3;
                         break;
                     case 'win':
-                        sound = winSound;
+                        sound = elements.winSound;
                         sound.volume = 0.5;
                         break;
                     case 'draw':
-                        sound = drawSound;
+                        sound = elements.drawSound;
                         sound.volume = 0.4;
                         break;
                     case 'error':
-                        sound = errorSound;
+                        sound = elements.errorSound;
                         sound.volume = 0.3;
+                        break;
+                    case 'hint':
+                        sound = elements.hintSound;
+                        sound.volume = 0.4;
                         break;
                 }
                 
-                sound.currentTime = 0;
-                sound.play().catch(e => console.log("صدا پخش نشد:", e));
-            };
-
-            // مدیریت تم بازی
-            document.getElementById('themeToggleGame').addEventListener('click', function() {
-                document.body.classList.toggle('dark-theme');
-                const icon = this.querySelector('i');
-                if (document.body.classList.contains('dark-theme')) {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-slun');
-                    icon.classList.add('fa-moon');
+                if (sound) {
+                    sound.currentTime = 0;
+                    sound.play().catch(e => console.log("صدا پخش نشد:", e));
                 }
-            });
-
-            // ایجاد کنفتی
-            function createConfetti(count = 50) {
+            }
+            
+            // تابع‌های تنظیمات
+            
+            function toggleAnimations() {
+                gameState.settings.animations = elements.animations.checked;
+                saveSettings();
+            }
+            
+            function toggleHints() {
+                gameState.settings.showHints = elements.showHints.checked;
+                saveSettings();
+            }
+            
+            function toggleHighlight() {
+                gameState.settings.highlightMoves = elements.highlightMoves.checked;
+                saveSettings();
+            }
+            
+            function loadSettings() {
+                const savedSettings = localStorage.getItem('ticTacToeSettings');
+                if (savedSettings) {
+                    const settings = JSON.parse(savedSettings);
+                    Object.assign(gameState.settings, settings);
+                    
+                    // اعمال تنظیمات روی UI
+                    elements.moveTime.value = gameState.settings.moveTime;
+                    elements.moveTimeValue.textContent = gameState.settings.moveTime;
+                    elements.soundEffects.checked = gameState.sounds.enabled;
+                    elements.animations.checked = gameState.settings.animations;
+                    elements.showHints.checked = gameState.settings.showHints;
+                    elements.highlightMoves.checked = gameState.settings.highlightMoves;
+                }
+                
+                // بارگذاری تم
+                const savedTheme = localStorage.getItem('gameTheme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                const icon = elements.themeToggleGame.querySelector('i');
+                icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            
+            function saveSettings() {
+                const settings = {
+                    moveTime: gameState.settings.moveTime,
+                    animations: gameState.settings.animations,
+                    showHints: gameState.settings.showHints,
+                    highlightMoves: gameState.settings.highlightMoves
+                };
+                localStorage.setItem('ticTacToeSettings', JSON.stringify(settings));
+            }
+            
+            // تابع‌های آمار
+            
+            function loadStats() {
+                const savedStats = localStorage.getItem('ticTacToeStats');
+                if (savedStats) {
+                    const stats = JSON.parse(savedStats);
+                    Object.assign(gameState, stats);
+                    
+                    // بروزرسانی UI
+                    updatePlayerStats();
+                    updateStats();
+                }
+            }
+            
+            function saveStats() {
+                const statsToSave = {
+                    players: gameState.players,
+                    stats: gameState.stats
+                };
+                localStorage.setItem('ticTacToeStats', JSON.stringify(statsToSave));
+            }
+            
+            // تابع‌های UI
+            
+            function updateUI() {
+                updateBoard();
+                updatePlayerCards();
+                updatePlayerStats();
+                updateStats();
+                updateMoveHistory();
+                updateControls();
+                updateStatusMessage();
+            }
+            
+            function updateBoard() {
+                elements.cells.forEach((cell, index) => {
+                    const value = gameState.board[index];
+                    
+                    cell.textContent = value || '';
+                    cell.classList.toggle('x', value === 'X');
+                    cell.classList.toggle('o', value === 'O');
+                    cell.classList.toggle('occupied', value !== null);
+                    
+                    // حذف placeholder
+                    cell.classList.remove('cell-placeholder');
+                });
+            }
+            
+            function updatePlayerCards() {
+                const isXActive = gameState.currentPlayer === 'X';
+                
+                elements.playerXCard.classList.toggle('active-player', isXActive);
+                elements.playerOCard.classList.toggle('active-player', !isXActive);
+                
+                elements.xTurnIndicator.classList.toggle('current-turn', isXActive);
+                elements.oTurnIndicator.classList.toggle('current-turn', !isXActive);
+                
+                elements.xTurnIndicator.style.display = gameState.players.X.type === 'ai' && isXActive ? 'none' : 'flex';
+                elements.oTurnIndicator.style.display = gameState.players.O.type === 'ai' && !isXActive ? 'none' : 'flex';
+            }
+            
+            function updatePlayerTypes() {
+                // بروزرسانی بازیکن X
+                const xTypeBadge = elements.playerXCard.querySelector('.player-type-badge');
+                xTypeBadge.textContent = gameState.players.X.type === 'human' ? 'انسان' : 'هوش مصنوعی';
+                xTypeBadge.className = `player-type-badge ${gameState.players.X.type}`;
+                
+                // بروزرسانی بازیکن O
+                const oTypeBadge = elements.playerOCard.querySelector('.player-type-badge');
+                oTypeBadge.textContent = gameState.players.O.type === 'human' ? 'انسان' : 'هوش مصنوعی';
+                oTypeBadge.className = `player-type-badge ${gameState.players.O.type}`;
+            }
+            
+            function updatePlayerStats() {
+                // بروزرسانی امتیازات با انیمیشن
+                elements.playerXScore.textContent = gameState.players.X.score;
+                elements.playerOScore.textContent = gameState.players.O.score;
+                
+                elements.playerXWins.textContent = gameState.players.X.wins;
+                elements.playerOWins.textContent = gameState.players.O.wins;
+                
+                elements.playerXGames.textContent = gameState.players.X.games;
+                elements.playerOGames.textContent = gameState.players.O.games;
+                
+                // انیمیشن برای امتیاز جدید
+                elements.playerXScore.classList.add('score-updated');
+                elements.playerOScore.classList.add('score-updated');
+                setTimeout(() => {
+                    elements.playerXScore.classList.remove('score-updated');
+                    elements.playerOScore.classList.remove('score-updated');
+                }, 500);
+            }
+            
+            function updateStats() {
+                elements.totalGames.textContent = gameState.stats.totalGames;
+                elements.totalDraws.textContent = gameState.stats.totalDraws;
+                elements.totalTime.textContent = Math.floor(gameState.stats.totalTime / 60);
+                elements.winStreak.textContent = gameState.stats.bestWinStreak;
+                
+                if (gameState.stats.fastestWin) {
+                    elements.fastestWin.textContent = `${gameState.stats.fastestWin} ثانیه`;
+                }
+            }
+            
+            function updateMoveHistory() {
+                elements.movesList.innerHTML = '';
+                
+                if (gameState.moveHistory.length === 0) {
+                    elements.movesList.innerHTML = '<div class="empty-moves">هنوز حرکتی انجام نشده</div>';
+                    return;
+                }
+                
+                // نمایش آخرین ۱۰ حرکت
+                const startIndex = Math.max(0, gameState.moveHistoryIndex - 9);
+                const movesToShow = gameState.moveHistory.slice(startIndex, gameState.moveHistoryIndex + 1);
+                
+                movesToShow.forEach((move, index) => {
+                    const moveElement = document.createElement('div');
+                    moveElement.className = 'move-item';
+                    
+                    const position = move.position;
+                    const row = Math.floor(position / 3) + 1;
+                    const col = (position % 3) + 1;
+                    
+                    moveElement.innerHTML = `
+                        <div class="move-player ${move.player.toLowerCase()}">${move.player}</div>
+                        <div class="move-details">
+                            <div class="move-position">ردیف ${row}, ستون ${col}</div>
+                            <div class="move-time">${formatTime(move.time)}</div>
+                        </div>
+                    `;
+                    
+                    elements.movesList.appendChild(moveElement);
+                });
+                
+                // اسکرول به پایین
+                elements.movesList.scrollTop = elements.movesList.scrollHeight;
+            }
+            
+            function updateControls() {
+                elements.undoBtn.disabled = gameState.moveHistoryIndex < 0;
+                elements.redoBtn.disabled = gameState.moveHistoryIndex >= gameState.moveHistory.length - 1;
+                elements.hintBtn.disabled = !gameState.gameActive || !gameState.settings.showHints;
+            }
+            
+            function updateStatusMessage() {
+                if (!gameState.gameActive) {
+                    const winner = checkWinner();
+                    if (winner) {
+                        elements.statusText.textContent = `بازیکن ${winner} برنده شد!`;
+                    } else if (isBoardFull()) {
+                        elements.statusText.textContent = 'بازی مساوی شد!';
+                    }
+                } else {
+                    const playerType = gameState.players[gameState.currentPlayer].type;
+                    const playerName = gameState.currentPlayer === 'X' ? 'بازیکن X' : 'بازیکن O';
+                    
+                    if (playerType === 'ai') {
+                        elements.statusText.textContent = `نوبت هوش مصنوعی (${playerName})`;
+                    } else {
+                        elements.statusText.textContent = `نوبت ${playerName}`;
+                    }
+                }
+            }
+            
+            // تابع‌های کمکی
+            
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            function getModeName(mode) {
+                const names = {
+                    'pvp': 'دو نفره',
+                    'easy': 'آسان',
+                    'medium': 'متوسط',
+                    'hard': 'سخت'
+                };
+                return names[mode] || mode;
+            }
+            
+            function showMessage(message, type = 'info') {
+                console.log(`[${type.toUpperCase()}] ${message}`);
+                
+                // در نسخه کامل می‌توان یک toast نمایش داد
+                elements.statusText.textContent = message;
+                elements.statusText.parentElement.style.color = 
+                    type === 'error' ? '#ef4444' : 
+                    type === 'success' ? '#10b981' : 'inherit';
+                
+                setTimeout(() => {
+                    updateStatusMessage();
+                    elements.statusText.parentElement.style.color = '';
+                }, 3000);
+            }
+            
+            function createConfetti(count = 100) {
+                if (!gameState.settings.animations) return;
+                
                 const container = document.querySelector('.game-board-container');
                 
                 for (let i = 0; i < count; i++) {
                     const confetti = document.createElement('div');
-                    confetti.classList.add('confetti');
+                    confetti.className = 'confetti';
                     
                     // موقعیت تصادفی
                     confetti.style.left = `${Math.random() * 100}%`;
@@ -765,173 +3822,163 @@
                     
                     container.appendChild(confetti);
                     
-                    // حذف بعد از انیمیشن
                     setTimeout(() => {
                         confetti.remove();
                     }, duration * 1000);
                 }
             }
-
-            // نمایش برنده
-            window.showWinner = function(player, moves, time) {
-                createConfetti(100);
-                playSound('win');
-                
-                const modal = document.getElementById('winnerModal');
-                const winnerIcon = document.getElementById('winnerIcon');
+            
+            // مودال‌ها
+            
+            function showWinnerModal(winner, moves, time) {
+                const modal = elements.winnerModal;
                 const winnerName = document.getElementById('winnerName');
                 const winnerDetails = document.getElementById('winnerDetails');
                 const winnerMoves = document.getElementById('winnerMoves');
                 const winnerTime = document.getElementById('winnerTime');
                 const winnerPoints = document.getElementById('winnerPoints');
                 const winnerTitle = document.getElementById('winnerTitle');
+                const winnerIcon = document.getElementById('winnerIcon');
                 
-                // تنظیم اطلاعات برنده
-                winnerName.textContent = player === 'X' ? 'بازیکن X' : 'بازیکن O';
+                // تنظیم اطلاعات
+                winnerName.textContent = winner === 'X' ? 'بازیکن X' : 'بازیکن O';
                 winnerDetails.textContent = `در ${moves} حرکت برنده شدید!`;
                 winnerMoves.textContent = moves;
                 winnerTime.textContent = time;
                 winnerPoints.textContent = `+${Math.floor(100 / moves)}`;
                 
-                // تغییر رنگ آیکون برنده
-                winnerIcon.innerHTML = player === 'X' ? 
+                // آیکون برنده
+                winnerIcon.innerHTML = winner === 'X' ? 
                     '<i class="fas fa-times"></i>' : 
                     '<i class="fas fa-circle"></i>';
-                winnerIcon.style.color = player === 'X' ? '#ef4444' : '#3b82f6';
+                winnerIcon.style.background = winner === 'X' ? 
+                    'linear-gradient(135deg, #ef4444, #dc2626)' : 
+                    'linear-gradient(135deg, #3b82f6, #2563eb)';
                 
-                // تغییر عنوان
-                winnerTitle.textContent = player === 'X' ? 
+                // عنوان
+                winnerTitle.textContent = winner === 'X' ? 
                     '🎉 بازیکن X برنده شد! 🎉' : 
                     '🎉 بازیکن O برنده شد! 🎉';
                 
                 // نمایش مودال
-                modal.style.display = 'block';
-                
-                // مدیریت بستن مودال
-                document.getElementById('modalClose').onclick = function() {
-                    modal.style.display = 'none';
-                };
-                
-                // دکمه بازی مجدد
-                document.getElementById('modalRematch').onclick = function() {
-                    modal.style.display = 'none';
-                    window.startNewGame();
-                };
-                
-                // دکمه بازی جدید
-                document.getElementById('modalNewGame').onclick = function() {
-                    modal.style.display = 'none';
-                    window.startNewGame(true);
-                };
-                
-                // دکمه اشتراک‌گذاری
-                document.getElementById('modalShare').onclick = function() {
-                    const shareText = `من در بازی دوز برنده شدم! ${player} در ${moves} حرکت برنده شد. امتیاز: ${Math.floor(100 / moves)}`;
-                    if (navigator.share) {
-                        navigator.share({
-                            title: 'برنده بازی دوز!',
-                            text: shareText,
-                            url: window.location.href
-                        });
-                    } else {
-                        navigator.clipboard.writeText(shareText);
-                        alert('متن کپی شد!');
-                    }
-                };
-            };
-
-            // نمایش تساوی
-            window.showDraw = function() {
-                playSound('draw');
-                
-                const modal = document.getElementById('drawModal');
-                modal.style.display = 'block';
-                
-                // بستن مودال
-                modal.querySelector('.modal-close').onclick = function() {
-                    modal.style.display = 'none';
-                };
-                
-                // بازی مجدد
-                document.getElementById('drawRematch').onclick = function() {
-                    modal.style.display = 'none';
-                    window.startNewGame();
-                };
-            };
-
-            // تایمر بازی
-            let gameTime = 0;
-            let timerInterval;
+                modal.style.display = 'flex';
+            }
             
-            window.startTimer = function() {
-                clearInterval(timerInterval);
-                gameTime = 0;
-                updateTimerDisplay();
-                timerInterval = setInterval(() => {
-                    gameTime++;
-                    updateTimerDisplay();
-                }, 1000);
-            };
+            function showDrawModal() {
+                elements.drawModal.style.display = 'flex';
+            }
             
-            window.stopTimer = function() {
-                clearInterval(timerInterval);
-            };
-            
-            window.resetTimer = function() {
-                gameTime = 0;
-                updateTimerDisplay();
-            };
-            
-            function updateTimerDisplay() {
-                const minutes = Math.floor(gameTime / 60);
-                const seconds = gameTime % 60;
-                const timerElement = document.getElementById('gameTimer');
-                timerElement.textContent = 
-                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            function shareResult() {
+                const winner = checkWinner();
+                const moves = gameState.moveHistory.filter(m => m.player === winner).length;
+                const time = gameState.timer.elapsedSeconds;
                 
-                // پالس در دقیقه آخر
-                if (gameTime > 60 && gameTime % 60 < 10) {
-                    timerElement.classList.add('timer-pulse');
+                const shareText = `من در بازی دوز حرفه‌ای برنده شدم! 🎮\n` +
+                                 `بازیکن ${winner} در ${moves} حرکت و ${time} ثانیه برنده شد.\n` +
+                                 `امتیاز کسب شده: ${Math.floor(100 / moves)}\n` +
+                                 `🏆 ${window.location.href}`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'برنده بازی دوز حرفه‌ای!',
+                        text: shareText,
+                        url: window.location.href
+                    });
+                } else if (navigator.clipboard) {
+                    navigator.clipboard.writeText(shareText)
+                        .then(() => showMessage('متن در کلیپ‌بورد کپی شد!', 'success'))
+                        .catch(() => showMessage('خطا در کپی کردن متن', 'error'));
                 } else {
-                    timerElement.classList.remove('timer-pulse');
+                    showMessage('امکان اشتراک‌گذاری در این مرورگر وجود ندارد', 'info');
                 }
             }
-
-            // مدیریت اسلایدر زمان حرکت
-            const moveTimeSlider = document.getElementById('moveTime');
-            const moveTimeValue = document.getElementById('moveTimeValue');
             
-            moveTimeSlider.addEventListener('input', function() {
-                moveTimeValue.textContent = this.value;
-            });
-
-            // مدیریت تغییر اندازه تخته
-            document.getElementById('boardSize').addEventListener('change', function() {
-                const size = parseInt(this.value);
-                alert(`تغییر اندازه تخته به ${size}×${size} نیاز به ری‌لود بازی دارد.`);
-                // در نسخه کامل این بخش پیاده‌سازی می‌شود
-            });
-
-            // راهنمایی
-            document.getElementById('hintBtn').addEventListener('click', function() {
-                playSound('click');
-                const hintText = document.getElementById('hintText');
-                hintText.classList.add('hint-flash');
-                setTimeout(() => {
-                    hintText.classList.remove('hint-flash');
-                }, 3000);
-            });
-
-            // نمایش سریع مودال‌ها برای تست
-            window.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.key === 'w') {
-                    showWinner('X', 5, 45);
+            function showAllRecords() {
+                showMessage('نمایش تمام رکوردها در نسخه بعدی اضافه خواهد شد', 'info');
+            }
+            
+            // هندلرهای کیبورد
+            
+            function handleKeyboardShortcuts(event) {
+                // Ctrl + N: بازی جدید
+                if (event.ctrlKey && event.key === 'n') {
+                    event.preventDefault();
+                    startNewGame();
                 }
-                if (e.ctrlKey && e.key === 'd') {
-                    showDraw();
+                
+                // Ctrl + Z: بازگشت
+                if (event.ctrlKey && event.key === 'z') {
+                    event.preventDefault();
+                    undoMove();
                 }
-            });
-        });
+                
+                // Ctrl + Y: تکرار
+                if (event.ctrlKey && event.key === 'y') {
+                    event.preventDefault();
+                    redoMove();
+                }
+                
+                // Ctrl + H: راهنمایی
+                if (event.ctrlKey && event.key === 'h') {
+                    event.preventDefault();
+                    showHint();
+                }
+                
+                // Ctrl + R: شروع سریع
+                if (event.ctrlKey && event.key === 'r') {
+                    event.preventDefault();
+                    quickRestart();
+                }
+                
+                // Escape: بستن مودال‌ها
+                if (event.key === 'Escape') {
+                    document.querySelectorAll('.modal').forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                }
+                
+                // اعداد 1-9: انتخاب سلول
+                if (event.key >= '1' && event.key <= '9' && gameState.gameActive) {
+                    const index = parseInt(event.key) - 1;
+                    if (gameState.board[index] === null) {
+                        makeMove(index);
+                    }
+                }
+            }
+            
+            // هندلر ریسپانسیو
+            
+            function handleResize() {
+                const isMobile = window.innerWidth <= 768;
+                document.querySelector('.mobile-controls').classList.toggle('d-none', !isMobile);
+                
+                if (isMobile) {
+                    document.querySelectorAll('.player-panel, .settings-panel').forEach(panel => {
+                        panel.style.display = 'none';
+                    });
+                } else {
+                    document.querySelectorAll('.player-panel, .settings-panel').forEach(panel => {
+                        panel.style.display = '';
+                    });
+                }
+            }
+            
+            // متدهای عمومی برای دسترسی از خارج
+            window.TicTacToeGame = {
+                startNewGame,
+                undoMove,
+                redoMove,
+                resetScores,
+                showHint,
+                changeGameMode,
+                toggleTheme,
+                playSound: (type) => playSound(type)
+            };
+            
+            // راه‌اندازی بازی
+            document.addEventListener('DOMContentLoaded', initGame);
+            
+        })();
     </script>
 </body>
 </html>
